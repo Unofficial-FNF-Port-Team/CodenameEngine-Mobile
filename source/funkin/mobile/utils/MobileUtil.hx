@@ -1,10 +1,10 @@
 package funkin.mobile.utils;
 
 #if android
-import android.os.Build.VERSION;
-import android.os.Environment;
-import android.Permissions;
-import android.Settings;
+import extension.androidtools.os.Build.VERSION;
+import extension.androidtools.os.Environment;
+import extension.androidtools.Permissions;
+import extension.androidtools.Settings;
 
 import lime.system.System;
 import lime.app.Application;
@@ -28,18 +28,15 @@ class MobileUtil {
    */
 
   public static function getDirectory():String {
+   currentDirectory = if (VERSION.SDK_INT >= 33) Environment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file') else Environment.getExternalStorageDirectory() + '/Android/media/' + lime.app.Application.current.meta.get('packageName');
 
-    if(VERSION.SDK_INT >= 33)
-    currentDirectory = Environment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file');
-    else
-    currentDirectory = Environment.getExternalStorageDirectory() + '/Android/media/' + lime.app.Application.current.meta.get('packageName');
   return currentDirectory;
   }
 
   /**
    * Requests Storage Permissions on Android Platform.
    */
-
+  
     public static function getPermissions():Void
     {
     if(VERSION.SDK_INT >= 33){
@@ -56,7 +53,7 @@ class MobileUtil {
      } catch (e:Dynamic) {
     trace(e);
   if(!FileSystem.exists(MobileUtil.getDirectory())) {
-    NativeAPI.showMessageBox("Seems like you didnt enabled permissions requested to run the game/didnt put assets to your storage. Please enable them/put assets/mods folders to .CodenameEngine folder to be able to run the game. \n Press OK to close the game.", 'Uncaught Error');
+    NativeAPI.showMessageBox("Seems like you didnt enabled permissions requested to run the game.", 'Uncaught Error');
     FileSystem.createDirectory(MobileUtil.getDirectory());
      System.exit(0);
      }
@@ -67,15 +64,14 @@ class MobileUtil {
    * Saves a file to the external storage.
    */
 
-	public static function save(fileName:String = 'Ye', fileExt:String = '.json', fileData:String = 'you didnt cooked, try again!')
+	public static function save(fileName:String = 'Ye', fileExt:String = '.txt', fileData:String = 'Nice try, but you failed, try again!')
 	{
-	  var savesDir:String = MobileUtil.getDirectory() + 'saved-content/';
+	  var savesDir:String = MobileUtil.getDirectory() + 'saves/';
 
 		if (!FileSystem.exists(savesDir))
 			FileSystem.createDirectory(savesDir);
 
 		File.saveContent(savesDir + fileName + fileExt, fileData);
 	}
-
 }
 #end
