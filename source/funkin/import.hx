@@ -23,6 +23,12 @@ import flixel.math.FlxMath;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxDestroyUtil;
 
+#if mobile
+import funkin.mobile.*;
+import funkin.mobile.utils.*;
+import funkin.mobile.backend.*;
+#end
+
 import funkin.backend.system.Flags;
 import funkin.Types;
 

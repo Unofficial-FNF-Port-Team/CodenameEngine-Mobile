@@ -24,9 +24,9 @@ import openfl.utils.AssetLibrary;
 #if ALLOW_MULTITHREADING
 import sys.thread.Thread;
 #end
+
 #if android
-import android.content.Context;
-import android.os.Build;
+import extension.androidtools.os.Build;
 #end
 
 class Main extends Sprite
@@ -39,9 +39,7 @@ class Main extends Sprite
 	public static var verbose:Bool = false;
 
 	public static var scaleMode:FunkinRatioScaleMode;
-	#if !mobile
 	public static var framerateSprite:funkin.backend.system.framerate.Framerate;
-	#end
 
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels).
@@ -74,11 +72,16 @@ class Main extends Sprite
 
 		instance = this;
 
+		#if android
+		MobileUtil.getPermissions();
+		Sys.setCwd(haxe.io.Path.addTrailingSlash(MobileUtil.getDirectory()));
+		#end
+
 		CrashHandler.init();
 
 		addChild(game = new FunkinGame(gameWidth, gameHeight, MainState, Options.framerate, Options.framerate, skipSplash, startFullscreen));
 
-		#if (!mobile && !web)
+		#if !web
 		addChild(framerateSprite = new funkin.backend.system.framerate.Framerate());
 		SystemInfo.init();
 		#end
@@ -233,8 +236,6 @@ class Main extends Sprite
 		if (!noCwdFix && !sys.FileSystem.exists('manifest/default.json')) {
 			Sys.setCwd(haxe.io.Path.directory(Sys.programPath()));
 		}
-		#elseif android
-		Sys.setCwd(haxe.io.Path.addTrailingSlash(VERSION.SDK_INT > 30 ? Context.getObbDir() : Context.getExternalFilesDir()));
 		#elseif (ios || switch)
 		Sys.setCwd(haxe.io.Path.addTrailingSlash(openfl.filesystem.File.applicationStorageDirectory.nativePath));
 		#end
