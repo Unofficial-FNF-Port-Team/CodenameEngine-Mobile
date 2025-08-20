@@ -27,11 +27,11 @@ class ModsFolder {
 	/**
 	 * Path to the `mods` folder.
 	 */
-	public static var modsPath:String = "./mods/";
+	public static var modsPath:String = #if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end "./mods/";
 	/**
 	 * Path to the `addons` folder.
 	 */
-	public static var addonsPath:String = "./addons/";
+	public static var addonsPath:String = #if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end "./addons/";
 
 	/**
 	 * If accessing a file as assets/data/global/LIB_mymod.hx should redirect to mymod:assets/data/global.hx
@@ -47,6 +47,9 @@ class ModsFolder {
 	 * Initializes `mods` folder.
 	 */
 	public static function init() {
+        if (!FileSystem.exists(modsPath)) FileSystem.createDirectory(modsPath);
+		if (!FileSystem.exists(addonsPath)) FileSystem.createDirectory(addonsPath);
+
 		if(!getModsList().contains(Options.lastLoadedMod)) {
 			if(Options.lastLoadedMod != null)
 				Logs.warn("Mod \"" + Options.lastLoadedMod + "\" not found in mods list, switching to base game!");
@@ -101,13 +104,13 @@ class ModsFolder {
 			FileSystem.createDirectory(modsPath);
 		}
 		
-		final modsList:Array<String> = FileSystem.readDirectory(#if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end modsPath);
+		final modsList:Array<String> = FileSystem.readDirectory(modsPath);
 
 		if (modsList == null || modsList.length <= 0)
 			return mods;
 
 		for (modFolder in modsList) {
-			if (FileSystem.isDirectory(#if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end modsPath + modFolder)) {
+			if (FileSystem.isDirectory(modsPath + modFolder)) {
 				mods.push(modFolder);
 			} else {
 				var ext = Path.extension(modFolder).toLowerCase();
