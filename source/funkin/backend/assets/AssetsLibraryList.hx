@@ -155,8 +155,8 @@ class AssetsLibraryList extends AssetLibrary {
 		Logs.infos("Used cne test / cne build. Switching into source assets.");
 
 		#if MOD_SUPPORT
-		ModsFolder.modsPath = #if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end './${Main.pathBack}mods/';
-		ModsFolder.addonsPath = #if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end './${Main.pathBack}addons/';
+		ModsFolder.modsPath = './${Main.pathBack}mods/';
+		ModsFolder.addonsPath = './${Main.pathBack}addons/';
 		#end
 
 		__defaultLibraries.push(ModsFolder.loadLibraryFromFolder('assets', './${Main.pathBack}assets/', true, SOURCE));
