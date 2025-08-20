@@ -27,11 +27,11 @@ class ModsFolder {
 	/**
 	 * Path to the `mods` folder.
 	 */
-	public static var modsPath:String = #if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end "./mods/";
+	public static var modsPath:String = "./mods/";
 	/**
 	 * Path to the `addons` folder.
 	 */
-	public static var addonsPath:String = #if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end "./addons/";
+	public static var addonsPath:String = "./addons/";
 
 	/**
 	 * If accessing a file as assets/data/global/LIB_mymod.hx should redirect to mymod:assets/data/global.hx
