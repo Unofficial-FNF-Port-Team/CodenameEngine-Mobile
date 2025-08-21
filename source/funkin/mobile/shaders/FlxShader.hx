@@ -1,4 +1,4 @@
-package funkin.backend.shaders;
+package funkin.mobile.shaders;
 
 import flixel.system.FlxAssets.FlxShader as OriginalFlxShader;
 
