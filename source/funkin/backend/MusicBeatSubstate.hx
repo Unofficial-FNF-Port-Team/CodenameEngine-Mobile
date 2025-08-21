@@ -11,6 +11,11 @@ import funkin.backend.system.Controls;
 import funkin.backend.system.interfaces.IBeatReceiver;
 import funkin.backend.system.interfaces.IBeatCancellableReceiver;
 import funkin.options.PlayerSettings;
+#if mobile
+import flixel.FlxCamera;
+import flixel.input.actions.FlxActionInput;
+import funkin.mobile.controls.FlxVirtualPad;
+#end
 
 /**
  * Base class for all the sub states.
@@ -105,6 +110,33 @@ class MusicBeatSubstate extends FlxSubState implements IBeatCancellableReceiver
 	inline function get_controlsP2():Controls
 		return PlayerSettings.player2.controls;
 
+	#if mobile
+	public var vPad:FlxVirtualPad;
+	var trackedinputs:Array<FlxActionInput> = [];
+
+	public function addVPad(?DPad:FlxDPadMode, ?Action:FlxActionMode) {
+		vPad = new FlxVirtualPad(DPad, Action);
+		vPad.alpha = 0.35;
+		add(vPad);
+		controls.setUIVirtualPad(vPad, DPad, Action);
+		trackedinputs = controls.trackedUIInputs;
+		controls.trackedUIInputs = [];
+	}
+	
+	public function addVPadCamera() {
+		var camcontrol = new FlxCamera(); 
+		FlxG.cameras.add(camcontrol, false); 
+		camcontrol.bgColor.alpha = 0; 
+		vPad.cameras = [camcontrol];
+	}
+
+	public function removeVPad() {
+		if (vPad != null) {
+			remove(vPad);
+			controls.removeFlxInput(trackedinputs);
+		}
+	}
+	#end
 
 	public function new(scriptsAllowed:Bool = true, ?scriptName:String) {
 		super();
@@ -124,6 +156,14 @@ class MusicBeatSubstate extends FlxSubState implements IBeatCancellableReceiver
 					var script = Script.create(path);
 					if (script is DummyScript) continue;
 					script.remappedNames.set(script.fileName, '$i:${script.fileName}');
+					#if mobile
+					stateScripts.set('setVirtualPad', function(DPad:FlxDPadMode, Action:FlxActionMode, ?addPadCam = false){
+						if (vPad == null) return;
+						removeVPad();
+						addVPad(DPad, Action);
+						if(addPadCam) addVPadCamera();
+					});
+					#end
 					stateScripts.add(script);
 					script.load();
 				}
@@ -242,9 +282,18 @@ class MusicBeatSubstate extends FlxSubState implements IBeatCancellableReceiver
 	}
 
 	public override function destroy() {
+		#if mobile
+		controls.removeFlxInput(trackedinputs);
+		#end
 		super.destroy();
 		call("destroy");
 		stateScripts = FlxDestroyUtil.destroy(stateScripts);
+		#if mobile
+		if (vPad != null) {
+			vPad.destroy();
+			vPad = null;
+		}
+		#end
 	}
 
 	public override function switchTo(nextState:FlxState) {

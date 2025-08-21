@@ -93,6 +93,11 @@ class MainMenuState extends MusicBeatState
 		add(devModeWarning);
 		devModeWarning.scrollFactor.set();
 		devModeWarning.alpha = 0;
+		#if mobile
+		addVPad(UP_DOWN, A_B_X_Y);
+		addVPadCamera();
+		vPad.visible = true;
+		#end
 	}
 
 	var selectedSomethin:Bool = false;

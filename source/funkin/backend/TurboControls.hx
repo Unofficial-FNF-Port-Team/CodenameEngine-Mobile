@@ -9,6 +9,9 @@ import flixel.FlxBasic;
 
 import funkin.backend.system.Controls;
 import funkin.options.PlayerSettings;
+#if mobile
+import funkin.mobile.controls.FlxVirtualPad;
+#end
 
 class TurboBasic extends FlxBasic {
 	public static var DEFAULT_DELAY:Float = 0.4;
@@ -110,6 +113,7 @@ class TurboButtons extends TurboBasic {
 	}
 
 	override function get_pressed() {
+		if (gamepad == null) return false;
 		if (allPress) {
 			for (input in inputs) if (!gamepad.checkStatus(input, PRESSED)) return false;
 		}
@@ -119,3 +123,55 @@ class TurboButtons extends TurboBasic {
 		return allPress;
 	}
 }
+
+#if mobile
+class TurboVirtualPad extends TurboBasic {
+	public var vpad:FlxVirtualPad;
+	public var buttons:Array<FlxButton>;
+	
+	public function new(vpad:FlxVirtualPad, buttons:Array<FlxButton>, ?delay:Float, ?interval:Float, ?allPress:Bool) {
+		super(delay, interval, allPress);
+		this.vpad = vpad;
+		this.buttons = buttons;
+	}
+
+	override function get_pressed() {
+		if (vpad == null || buttons == null) return false;
+		if (allPress) {
+			for (button in buttons) if (button == null || !button.pressed) return false;
+		}
+		else {
+			for (button in buttons) if (button != null && button.pressed) return true;
+		}
+		return allPress;
+	}
+}
+
+class TurboVirtualButtons extends TurboBasic {
+	public var vpad:FlxVirtualPad;
+	public var buttonNames:Array<String>;
+	
+	public function new(vpad:FlxVirtualPad, buttonNames:Array<String>, ?delay:Float, ?interval:Float, ?allPress:Bool) {
+		super(delay, interval, allPress);
+		this.vpad = vpad;
+		this.buttonNames = buttonNames;
+	}
+
+	override function get_pressed() {
+		if (vpad == null || buttonNames == null) return false;
+		if (allPress) {
+			for (buttonName in buttonNames) {
+				var button = Reflect.getProperty(vpad, buttonName);
+				if (button == null || !Reflect.getProperty(button, 'pressed')) return false;
+			}
+		}
+		else {
+			for (buttonName in buttonNames) {
+				var button = Reflect.getProperty(vpad, buttonName);
+				if (button != null && Reflect.getProperty(button, 'pressed')) return true;
+			}
+		}
+		return allPress;
+	}
+}
+#end

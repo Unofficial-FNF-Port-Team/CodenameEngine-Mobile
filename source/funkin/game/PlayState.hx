@@ -874,6 +874,8 @@ class PlayState extends MusicBeatState
 			e.cameras = [camHUD];
 		#end
 
+		#if mobile addMControls(); #end
+
 		startingSong = true;
 
 		super.create();
@@ -978,6 +980,7 @@ class PlayState extends MusicBeatState
 
 			if (gameAndCharsEvent("onStartCountdown", new CancellableEvent()).cancelled) return;
 		}
+		#if mobile mcontrols.visible = true; #end
 
 		startedCountdown = true;
 		Conductor.songPosition = 0;
@@ -1407,7 +1410,7 @@ class PlayState extends MusicBeatState
 		while(events.length > 0 && events.last().time <= Conductor.songPosition)
 			executeEvent(events.pop());
 
-		if (controls.PAUSE && startedCountdown && canPause)
+		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 			pauseGame();
 
 		if (generatedMusic)
@@ -1702,6 +1705,7 @@ class PlayState extends MusicBeatState
 		for (strumLine in strumLines.members) strumLine.vocals.stop();
 		inst.stop();
 		vocals.stop();
+		#if mobile mcontrols.visible = false; #end
 
 		if (validScore) {
 			#if !switch

@@ -76,7 +76,7 @@ class Main extends Sprite
 		MobileUtil.getPermissions();
 		Sys.setCwd(haxe.io.Path.addTrailingSlash(MobileUtil.getDirectory()));
 		#end
-
+		
 		CrashHandler.init();
 
 		addChild(game = new FunkinGame(gameWidth, gameHeight, MainState, Options.framerate, Options.framerate, skipSplash, startFullscreen));

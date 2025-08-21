@@ -187,6 +187,10 @@ class FreeplayState extends MusicBeatState
 		changeCoopMode(0, true);
 
 		interpColor = new FlxInterpolateColor(bg.color);
+		#if mobile
+		addVPad(FULL, A_B_X_Y);
+		addVPadCamera();
+		#end
 	}
 
 	#if PRELOAD_ALL

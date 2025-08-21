@@ -3,10 +3,16 @@ package funkin.backend.system;
 import flixel.input.FlxInput;
 import flixel.input.actions.FlxAction;
 import flixel.input.actions.FlxActionInput;
+import flixel.input.actions.FlxActionInputDigital;
 import flixel.input.actions.FlxActionManager;
 import flixel.input.actions.FlxActionSet;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
+#if mobile
+import funkin.mobile.backend.FlxButton;
+import funkin.mobile.controls.FlxVirtualPad;
+import funkin.mobile.controls.HitBox;
+#end
 
 enum Control
 {
@@ -185,6 +191,11 @@ class Controls extends FlxActionSet
 	public var gamepadsAdded:Array<Int> = [];
 	public var keyboardScheme:KeyboardScheme = None;
 
+	#if mobile
+	public var trackedInputs:Array<FlxActionInput> = [];
+	public var trackedUIInputs:Array<FlxActionInput> = [];
+	#end
+
 	public function new(name, scheme = None)
 	{
 		super(name);
@@ -196,6 +207,159 @@ class Controls extends FlxActionSet
 
 		setKeyboardScheme(scheme, false);
 	}
+
+	#if mobile
+	public function addButton(action:FlxActionDigital, button:FlxButton, state:FlxInputState) {
+		var input = new FlxActionInputDigitalIFlxInput(button, state);
+		trackedInputs.push(input);
+		action.add(input);
+	}
+	
+	public function addUIButton(action:FlxActionDigital, button:FlxButton, state:FlxInputState) {
+		var input = new FlxActionInputDigitalIFlxInput(button, state);
+		trackedUIInputs.push(input);
+		action.add(input);
+	}
+	
+	public function setHitBox(hitbox:HitBox) 
+	{
+		macro_forEachBound(Control.NOTE_UP, (action, state) -> addButton(action, hitbox.buttonUp, state));
+		macro_forEachBound(Control.NOTE_DOWN, (action, state) -> addButton(action, hitbox.buttonDown, state));
+		macro_forEachBound(Control.NOTE_LEFT, (action, state) -> addButton(action, hitbox.buttonLeft, state));
+		macro_forEachBound(Control.NOTE_RIGHT, (action, state) -> addButton(action, hitbox.buttonRight, state));
+	}
+
+	public function setVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode) {
+		if (DPad == null)
+			DPad = NONE;
+		if (Action == null)
+			Action = NONE;
+
+		switch (DPad)
+		{
+			case UP_DOWN:
+				macro_forEachBound(Control.NOTE_UP, (action, state) -> addButton(action, virtualPad.buttonUp, state));
+				macro_forEachBound(Control.NOTE_DOWN, (action, state) -> addButton(action, virtualPad.buttonDown, state));
+			case LEFT_RIGHT:
+				macro_forEachBound(Control.NOTE_LEFT, (action, state) -> addButton(action, virtualPad.buttonLeft, state));
+				macro_forEachBound(Control.NOTE_RIGHT, (action, state) -> addButton(action, virtualPad.buttonRight, state));
+			case UP_LEFT_RIGHT:
+				macro_forEachBound(Control.NOTE_UP, (action, state) -> addButton(action, virtualPad.buttonUp, state));
+				macro_forEachBound(Control.NOTE_LEFT, (action, state) -> addButton(action, virtualPad.buttonLeft, state));
+				macro_forEachBound(Control.NOTE_RIGHT, (action, state) -> addButton(action, virtualPad.buttonRight, state));
+			case FULL | RIGHT_FULL:
+				macro_forEachBound(Control.NOTE_UP, (action, state) -> addButton(action, virtualPad.buttonUp, state));
+				macro_forEachBound(Control.NOTE_DOWN, (action, state) -> addButton(action, virtualPad.buttonDown, state));
+				macro_forEachBound(Control.NOTE_LEFT, (action, state) -> addButton(action, virtualPad.buttonLeft, state));
+				macro_forEachBound(Control.NOTE_RIGHT, (action, state) -> addButton(action, virtualPad.buttonRight, state));
+			case NONE:
+		}
+
+		switch (Action)
+		{
+			case A:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addButton(action, virtualPad.buttonA, state));
+			case B:
+				macro_forEachBound(Control.BACK, (action, state) -> addButton(action, virtualPad.buttonB, state));
+			case A_B:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addButton(action, virtualPad.buttonB, state));
+			case A_B_C:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addButton(action, virtualPad.buttonB, state));
+			case A_B_X_Y:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addButton(action, virtualPad.buttonB, state));
+			case A_B_C_X_Y:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addButton(action, virtualPad.buttonB, state));
+			case B_C:
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case B_X_Y:
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case B_C_X_Y:
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case NONE:
+		}
+	}
+
+	public function setUIVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode) {
+		if (DPad == null)
+			DPad = NONE;
+		if (Action == null)
+			Action = NONE;
+
+		switch (DPad)
+		{
+			case UP_DOWN:
+				macro_forEachBound(Control.UP, (action, state) -> addUIButton(action, virtualPad.buttonUp, state));
+				macro_forEachBound(Control.DOWN, (action, state) -> addUIButton(action, virtualPad.buttonDown, state));
+			case LEFT_RIGHT:
+				macro_forEachBound(Control.LEFT, (action, state) -> addUIButton(action, virtualPad.buttonLeft, state));
+				macro_forEachBound(Control.RIGHT, (action, state) -> addUIButton(action, virtualPad.buttonRight, state));
+			case UP_LEFT_RIGHT:
+				macro_forEachBound(Control.UP, (action, state) -> addUIButton(action, virtualPad.buttonUp, state));
+				macro_forEachBound(Control.LEFT, (action, state) -> addUIButton(action, virtualPad.buttonLeft, state));
+				macro_forEachBound(Control.RIGHT, (action, state) -> addUIButton(action, virtualPad.buttonRight, state));
+			case FULL | RIGHT_FULL:
+				macro_forEachBound(Control.UP, (action, state) -> addUIButton(action, virtualPad.buttonUp, state));
+				macro_forEachBound(Control.DOWN, (action, state) -> addUIButton(action, virtualPad.buttonDown, state));
+				macro_forEachBound(Control.LEFT, (action, state) -> addUIButton(action, virtualPad.buttonLeft, state));
+				macro_forEachBound(Control.RIGHT, (action, state) -> addUIButton(action, virtualPad.buttonRight, state));
+			case NONE:
+		}
+
+		switch (Action)
+		{
+			case A:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addUIButton(action, virtualPad.buttonA, state));
+			case B:
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case A_B:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addUIButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case A_B_C:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addUIButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case A_B_X_Y:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addUIButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case A_B_C_X_Y:
+				macro_forEachBound(Control.ACCEPT, (action, state) -> addUIButton(action, virtualPad.buttonA, state));
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case B_C:
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case B_X_Y:
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case B_C_X_Y:
+				macro_forEachBound(Control.BACK, (action, state) -> addUIButton(action, virtualPad.buttonB, state));
+			case NONE:
+		}
+	}
+
+	public function removeFlxInput(inputsToRemove:Array<FlxActionInput>) {
+		for (action in this.digitalActions)
+		{
+			var i = action.inputs.length;
+			
+			while (i-- > 0)
+			{
+				var input = action.inputs[i];
+
+				for (inputToRemove in inputsToRemove)
+					if (inputToRemove == input)
+						action.remove(input);
+			}
+		}
+	}
+
+	public function removeMobileInputs() {
+		removeFlxInput(trackedInputs);
+		removeFlxInput(trackedUIInputs);
+		trackedInputs = [];
+		trackedUIInputs = [];
+	}
+	#end
 
 	public function getActionFromControl(control:Control):FlxAction return macro_getActionFromControl(control);
 
