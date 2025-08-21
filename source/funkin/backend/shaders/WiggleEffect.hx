@@ -1,11 +1,7 @@
 package funkin.backend.shaders;
 
 // STOLEN FROM HAXEFLIXEL DEMO LOL
-#if desktop
 import flixel.system.FlxAssets.FlxShader;
-#else
-import funkin.mobile.shaders.FlxShader;
-#end
 
 @:dox(hide)
 enum WiggleEffectType
