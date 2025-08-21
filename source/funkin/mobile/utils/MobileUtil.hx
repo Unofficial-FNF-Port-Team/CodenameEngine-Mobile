@@ -28,9 +28,7 @@ class MobileUtil {
    */
 
   public static function getDirectory():String {
-   currentDirectory = if (VERSION.SDK_INT >= 33) Environment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file') else Environment.getExternalStorageDirectory() + '/Android/media/' + lime.app.Application.current.meta.get('packageName');
-
-  return currentDirectory;
+  return '/storage/emulated/0/.CodenameEngine/';
   }
 
   /**
