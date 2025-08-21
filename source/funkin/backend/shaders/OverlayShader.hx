@@ -1,6 +1,10 @@
 package funkin.backend.shaders;
 
+#if desktop
 import flixel.system.FlxAssets.FlxShader;
+#else
+import funkin.mobile.shaders.FlxShader;
+#end
 
 @:dox(hide)
 class OverlayShader extends FlxShader

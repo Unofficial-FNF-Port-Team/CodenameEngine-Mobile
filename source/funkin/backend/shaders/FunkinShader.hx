@@ -2,7 +2,11 @@ package funkin.backend.shaders;
 
 import funkin.backend.utils.NativeAPI;
 import flixel.graphics.FlxGraphic;
+#if desktop
 import flixel.system.FlxAssets.FlxShader;
+#else
+import funkin.mobile.shaders.FlxShader;
+#end
 import flixel.util.FlxSignal.FlxTypedSignal;
 import haxe.Exception;
 import hscript.IHScriptCustomBehaviour;
