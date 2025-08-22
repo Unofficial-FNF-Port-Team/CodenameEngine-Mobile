@@ -13,10 +13,11 @@ class NumOption extends TextOption {
     public var currentValue:Float;
     public var parent:Dynamic;
     public var optionName:String;
+	public var firstFrame:Bool = true;
 
-    var leftArrow:FlxSprite;
-    var rightArrow:FlxSprite;
-    var valueText:Alphabet;
+    public var leftArrow:FlxSprite;
+    public var rightArrow:FlxSprite;
+    public var valueText:Alphabet;
 
     public function new(text:String, desc:String, min:Float, max:Float, step:Float = 1, ?optionName:String, ?changedCallback:Float->Void = null, ?parent:Dynamic) {
         this.changedCallback = changedCallback;
@@ -43,7 +44,7 @@ class NumOption extends TextOption {
     }
 
 	private function positionElements():Void {
-		var baseOffset = 70;
+		var baseOffset = 90;
 		valueText.x = __text.x + __text.width + baseOffset;
 		valueText.y = __text.y + (__text.height - valueText.height)/2;
 
@@ -63,12 +64,16 @@ class NumOption extends TextOption {
         Reflect.setField(parent, optionName, currentValue);
         if (changedCallback != null) changedCallback(currentValue);
 
-		positionElements();
         CoolUtil.playMenuSFX(SCROLL);
     }
 
     public override function update(elapsed:Float):Void {
         super.update(elapsed);
+
+		if (firstFrame) {
+			firstFrame = false;
+			positionElements();
+		}
 
         if (leftArrow.overlapsPoint(FlxG.mouse.getWorldPosition()) && FlxG.mouse.justPressed) changeSelection(-1);
         if (rightArrow.overlapsPoint(FlxG.mouse.getWorldPosition()) && FlxG.mouse.justPressed) changeSelection(1);
