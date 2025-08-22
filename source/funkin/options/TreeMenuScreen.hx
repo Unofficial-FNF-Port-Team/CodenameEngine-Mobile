@@ -111,11 +111,11 @@ class TreeMenuScreen extends FlxSpriteGroup {
 				if (controls.ACCEPT || (!mouseControl && FlxG.mouse.justPressed && mouseOverlaps(members[curSelected]))) curOption.select();
 
 				if (curFloatOption != null) {
-					if (controls.LEFT #if mobile || TouchInput.isSwipe('left') #end) curFloatOption.changeValue(-elapsed);
-					if (controls.RIGHT #if mobile || TouchInput.isSwipe('right') #end) curFloatOption.changeValue(elapsed);
+					if (controls.LEFT) curFloatOption.changeValue(-elapsed);
+					if (controls.RIGHT) curFloatOption.changeValue(elapsed);
 				} else {
-					if (leftTurboControl.activated #if mobile || TouchInput.isSwipe('left') #end) curOption.changeSelection(-1);
-					if (rightTurboControl.activated #if mobile || TouchInput.isSwipe('right') #end) curOption.changeSelection(1);
+					if (leftTurboControl.activated) curOption.changeSelection(-1);
+					if (rightTurboControl.activated) curOption.changeSelection(1);
 				}
 			}
 

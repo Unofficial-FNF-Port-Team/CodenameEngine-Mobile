@@ -1,53 +1,79 @@
 package funkin.options.type;
 
-/**
- * Option type that allows stepping through a number.
-**/
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.math.FlxMath;
+import funkin.backend.utils.CoolUtil;
+
 class NumOption extends TextOption {
-	public var changedCallback:Float->Void;
+    public var changedCallback:Float->Void;
+    public var min:Float;
+    public var max:Float;
+    public var step:Float;
+    public var currentValue:Float;
+    public var parent:Dynamic;
+    public var optionName:String;
 
-	public var min:Float;
-	public var max:Float;
-	public var step:Float;
+    var leftArrow:FlxSprite;
+    var rightArrow:FlxSprite;
+    var valueText:Alphabet;
 
-	public var currentValue:Float;
+    public function new(text:String, desc:String, min:Float, max:Float, step:Float = 1, ?optionName:String, ?changedCallback:Float->Void = null, ?parent:Dynamic) {
+        this.changedCallback = changedCallback;
+        this.min = min;
+        this.max = max;
+        this.step = step;
+        this.optionName = optionName;
+        this.parent = parent = parent != null ? parent : Options;
 
-	public var parent:Dynamic;
-	public var optionName:String;
+        if (Reflect.field(parent, optionName) != null) currentValue = Reflect.field(parent, optionName);
 
-	var __number:Alphabet;
+        super(text, desc);
 
-	override function set_text(v:String) {
-		super.set_text(v);
-		__number.x = __text.x + __text.width + 12;
-		return v;
+        leftArrow = new FlxSprite();
+        leftArrow.loadGraphic(Paths.image("menus/ui/arrow_left"));
+        add(leftArrow);
+
+        rightArrow = new FlxSprite();
+        rightArrow.loadGraphic(Paths.image("menus/ui/arrow_right"));
+        add(rightArrow);
+
+        valueText = new Alphabet(0, 0, Std.string(currentValue), "bold");
+        add(valueText);
+
+        positionElements();
+    }
+
+	private function positionElements():Void {
+		var baseOffset = 70;
+		valueText.x = __text.x + __text.width + baseOffset;
+		valueText.y = __text.y + (__text.height - valueText.height)/2;
+
+		leftArrow.x = valueText.x - leftArrow.width - 8;
+		leftArrow.y = __text.y + (__text.height - leftArrow.height)/2;
+
+		rightArrow.x = valueText.x + valueText.width + 8;
+		rightArrow.y = __text.y + (__text.height - rightArrow.height)/2;
+
 	}
 
-	public function new(text:String, desc:String, min:Float, max:Float, step:Float = 1, ?optionName:String, ?changedCallback:Float->Void = null, ?parent:Dynamic) {
-		this.changedCallback = changedCallback;
-		this.min = min;
-		this.max = max;
-		this.step = step;
-		this.optionName = optionName;
-		this.parent = parent = parent != null ? parent : Options;
+    override function changeSelection(change:Int):Void {
+        if (locked) return;
+        currentValue = FlxMath.bound(currentValue + change * step, min, max);
+        valueText.text = Std.string(currentValue);
 
-		if (Reflect.field(parent, optionName) != null) currentValue = Reflect.field(parent, optionName);
-	
-		__number = new Alphabet(0, 20, ': $currentValue', 'bold');
-		super(text, desc);
-		add(__number);
-	}
+        Reflect.setField(parent, optionName, currentValue);
+        if (changedCallback != null) changedCallback(currentValue);
 
-	override function changeSelection(change:Int):Void {
-		if (locked) return;
-		if (currentValue == (currentValue = FlxMath.bound(currentValue + change * step, min, max))) return;
-		__number.text = ': $currentValue';
+        CoolUtil.playMenuSFX(SCROLL);
+    }
 
-		Reflect.setField(parent, optionName, currentValue);
-		if (changedCallback != null) changedCallback(currentValue);
+    public override function update(elapsed:Float):Void {
+        super.update(elapsed);
 
-		CoolUtil.playMenuSFX(SCROLL);
-	}
+        if (leftArrow.overlapsPoint(FlxG.mouse.getWorldPosition()) && FlxG.mouse.justPressed) changeSelection(-1);
+        if (rightArrow.overlapsPoint(FlxG.mouse.getWorldPosition()) && FlxG.mouse.justPressed) changeSelection(1);
+    }
 
-	override function select() {}
+    override function select() {}
 }

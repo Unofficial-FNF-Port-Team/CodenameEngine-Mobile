@@ -4,17 +4,21 @@ class AppearanceOptions extends TreeMenuScreen {
 	public function new() {
 		super('optionsTree.appearance-name', 'optionsTree.appearance-desc', 'AppearanceOptions.');
 
-		add(new NumOption(getNameID('framerate'), getDescID('framerate'),
+		add(new NumOption(
+			getNameID('framerate'), 
+			getDescID('framerate'),
 			30, 240, 1,
 			'framerate', __changeFPS
 		));
+
 		add(new Checkbox(getNameID('flashingMenu'), getDescID('flashingMenu'), 'flashingMenu'));
 		add(new Checkbox(getNameID('colorHealthBar'), getDescID('colorHealthBar'), 'colorHealthBar'));
 		add(new Checkbox(getNameID('week6PixelPerfect'), getDescID('week6PixelPerfect'), 'week6PixelPerfect'));
 
 		add(new Separator());
 		add(new TextOption('optionsMenu.advanced', 'optionsTree.appearance.advanced-desc', ' >', () ->
-			parent.addMenu(new AdvancedAppearanceOptions())));
+			parent.addMenu(new AdvancedAppearanceOptions()))
+		);
 	}
 
 	private function __changeFPS(value:Float) {
