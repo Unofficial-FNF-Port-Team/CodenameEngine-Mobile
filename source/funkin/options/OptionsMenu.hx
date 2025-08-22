@@ -68,23 +68,43 @@ class OptionsMenu extends TreeMenu {
 				persistentUpdate = false;
 				persistentDraw = true;
 
-				if (o.substate is MusicBeatSubstate)
+				if (o.substate is MusicBeatSubstate) {
+				   	#if mobile
+				  	removeVPad();
+					#end
 					openSubState(o.substate);
-				else if(Reflect.isFunction(o.substate)) {
+				} else {
+				if(Reflect.isFunction(o.substate)) {
 					var substate:(name:String, desc:String) -> MusicBeatSubstate = o.substate;
+					#if mobile
+				  	removeVPad();
+					#end
 					openSubState(substate(o.name, o.desc));
 				}
-				else // o.substate is Class<TreeMenuScreen>
+			    } else { // o.substate is Class<TreeMenuScreen>
+			        #if mobile
+				  	removeVPad();
+					#end
 					openSubState(Type.createInstance(o.substate, [o.name, o.desc]));
 			}
-			else {
-				if (o.state is TreeMenuScreen)
+          } else {
+				if (o.state is TreeMenuScreen) {
+				    #if mobile
+				  	removeVPad();
+					#end
 					addMenu(o.state);
-				else if (Reflect.isFunction(o.state)) {
+				} else {
+					if (Reflect.isFunction(o.state)) {
 					var state:(name:String, desc:String) -> TreeMenuScreen = o.state;
+					#if mobile
+				  	removeVPad();
+					#end
 					addMenu(state(o.name, o.desc));
 				}
-				else { // o.state is Class<TreeMenuScreen>
+				} else { // o.state is Class<TreeMenuScreen>
+				    #if mobile
+				  	removeVPad();
+					#end
 					addMenu(Type.createInstance(o.state, [o.name, o.desc]));
 				}
 			}
@@ -104,7 +124,7 @@ class OptionsMenu extends TreeMenu {
 			}
 		}
 		#if mobile
-		addVPad(FULL, A_B);
+		addVPad(UP_DOWN, A_B);
 		addVPadCamera();
 		vPad.visible = true;
 		#end
