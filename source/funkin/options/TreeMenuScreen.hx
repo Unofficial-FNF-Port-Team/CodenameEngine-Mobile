@@ -149,15 +149,6 @@ class TreeMenuScreen extends FlxSpriteGroup {
 	public function close() {
 		onClose.dispatch();
 
-	  #if mobile
-	  MusicBeatState.instance.removeVPad();
-		new FlxTimer().start(0.35, function(tmr:FlxTimer)
-		{
-		MusicBeatState.instance.addVPad(UP_DOWN, A_B);
-	    MusicBeatState.instance.addVPadCamera();
-		});
-	  #end
-
 		if (curOption != null) curOption.selected = false;
 
 		if (parent == null) return destroy();

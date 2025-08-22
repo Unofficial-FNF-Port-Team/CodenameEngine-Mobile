@@ -174,8 +174,6 @@ class OptionsMenu extends TreeMenu {
 
 			if (justPressed) {
 				if (tree.menus.length > 1)
-					exitMenu();
-				else
 					exit();
 			}
 		}
