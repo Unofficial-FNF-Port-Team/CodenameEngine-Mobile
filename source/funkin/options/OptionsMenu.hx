@@ -48,6 +48,7 @@ class OptionsMenu extends TreeMenu {
 
 	var bg:FlxSprite;
 	var debugOption:TextOption;
+	var backBtn:FlxSprite;
 
 	override function create() {
 		super.create();
@@ -60,6 +61,16 @@ class OptionsMenu extends TreeMenu {
 		bg.antialiasing = true;
 		bg.scrollFactor.set();
 		updateBG();
+
+		backBtn = new FlxSprite().loadAnimatedGraphic(Paths.image('menus/backButton'));
+		backBtn.animation.play('back');
+		backBtn.antialiasing = true;
+		backBtn.scrollFactor.set();
+		backBtn.scale.set(0.7, 0.7);
+		backBtn.updateHitbox();
+		backBtn.x = FlxG.width - backBtn.width - 20;
+		backBtn.y = FlxG.height - backBtn.height - 20;
+		add(backBtn);
 
 		for (i in mainOptions) if (i.name == "optionsTree.language-name" && Flags.DISABLE_LANGUAGES) mainOptions.remove(i);
 
@@ -103,11 +114,6 @@ class OptionsMenu extends TreeMenu {
 				if (access != null) for (o in parseOptionsFromXML(first, access)) first.add(o);
 			}
 		}
-		#if mobile
-		addVPad(FULL, A_B);
-		addVPadCamera();
-		vPad.visible = true;
-		#end
 	}
 
 	function checkDebugOption() {
@@ -149,6 +155,30 @@ class OptionsMenu extends TreeMenu {
 		Options.save();
 		Options.applySettings();
 		super.exit();
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		if (backBtn != null) {
+			var justPressed = false;
+			
+			#if mobile
+			for (touch in FlxG.touches.list)
+				if (touch.justPressed && touch.overlaps(backBtn))
+					justPressed = true;
+			#else
+			if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(backBtn))
+				justPressed = true;
+			#end
+
+			if (justPressed) {
+				if (tree.menus.length > 1)
+					exitMenu();
+				else
+					exit();
+			}
+		}
 	}
 
 	// XML STUFF
