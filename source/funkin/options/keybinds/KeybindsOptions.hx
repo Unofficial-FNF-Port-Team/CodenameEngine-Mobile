@@ -241,7 +241,7 @@ class KeybindsOptions extends MusicBeatSubstate {
 		if (canSelect) {
 			changeSelection((controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0));
 
-			if (controls.BACK) {
+			if (controls.BACK #if android || FlxG.android.justReleased.BACK #end) {
 				if (isSubState) close();
 				else {
 					MusicBeatState.skipTransIn = true;

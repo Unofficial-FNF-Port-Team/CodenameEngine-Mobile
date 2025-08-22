@@ -31,18 +31,35 @@ class ModSwitchMenu extends MusicBeatSubstate {
 
 		mods = ModsFolder.getModsList();
 		mods.push(null);
+		mods.push("RETURN");
 
 		alphabets = new FlxTypedGroup<Alphabet>();
 		for(mod in mods) {
-			var a = new Alphabet(0, 0, mod == null ? TU.translate("mods.disableMods") : mod, "bold");
+			var displayText = "";
+			if (mod == null) {
+				displayText = TU.translate("mods.disableMods");
+			} else if (mod == "RETURN") {
+				displayText = "Return";
+			} else {
+				displayText = mod;
+			}
+			
+			var a = new Alphabet(0, 0, displayText, "bold");
 			if(mod == ModsFolder.currentModFolder)
 				a.color = FlxColor.LIME;
+			else if(mod == "RETURN")
+				a.color = FlxColor.YELLOW;
 			a.isMenuItem = true;
 			a.scrollFactor.set();
 			alphabets.add(a);
 		}
 		add(alphabets);
 		changeSelection(0, true);
+
+		#if mobile
+		addVPad(UP_DOWN, A);
+		addVPadCamera();
+		#end
 	}
 
 	public override function update(elapsed:Float) {
@@ -51,8 +68,12 @@ class ModSwitchMenu extends MusicBeatSubstate {
 		changeSelection((controls.DOWN_P ? 1 : 0) + (controls.UP_P ? -1 : 0) - FlxG.mouse.wheel);
 
 		if (controls.ACCEPT) {
-			ModsFolder.switchMod(mods[curSelected]);
-			close();
+			if (mods[curSelected] == "RETURN") {
+				FlxG.switchState(new MainMenuState());
+			} else {
+				ModsFolder.switchMod(mods[curSelected]);
+				close();
+			}
 		}
 
 		if (controls.BACK)

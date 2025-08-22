@@ -122,6 +122,11 @@ class PauseSubState extends MusicBeatSubstate
 
 		pauseScript.call("postCreate");
 
+        #if mobile
+		addVPad(UP_DOWN, A);
+		addVPadCamera();
+		#end
+
 		game.updateDiscordPresence();
 	}
 

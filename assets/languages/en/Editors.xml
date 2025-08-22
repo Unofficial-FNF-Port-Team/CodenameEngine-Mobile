@@ -39,6 +39,7 @@
 		<str id="uiDebug.name">UI Debug State</str>
 		<str id="wiki.name">Wiki</str>
 		<str id="debugOptions.name">Debug Options</str>
+		<str id="return.name">Return</str>
 	</group>
 
 	<group name="ChartEditor">

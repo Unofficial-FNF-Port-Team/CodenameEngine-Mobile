@@ -42,6 +42,11 @@ class EditorPicker extends MusicBeatSubstate {
 			onClick: function() {
 				CoolUtil.openURL(Flags.URL_WIKI);
 			}
+		},
+		{
+			name: "Return",
+			id: "return",
+			state: funkin.menus.MainMenuState
 		}
 	];
 
@@ -130,7 +135,7 @@ class EditorPicker extends MusicBeatSubstate {
 			}
 
 		}
-		if (controls.BACK)
+		if (controls.BACK #if android || FlxG.android.justReleased.BACK #end)
 			close();
 	}
 
