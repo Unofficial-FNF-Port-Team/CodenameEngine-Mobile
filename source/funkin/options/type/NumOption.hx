@@ -40,8 +40,6 @@ class NumOption extends TextOption {
 
         valueText = new Alphabet(0, 0, Std.string(currentValue), "bold");
         add(valueText);
-
-        positionElements();
     }
 
 	private function positionElements():Void {
@@ -65,6 +63,7 @@ class NumOption extends TextOption {
         Reflect.setField(parent, optionName, currentValue);
         if (changedCallback != null) changedCallback(currentValue);
 
+		positionElements();
         CoolUtil.playMenuSFX(SCROLL);
     }
 
