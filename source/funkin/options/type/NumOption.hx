@@ -6,78 +6,95 @@ import flixel.math.FlxMath;
 import funkin.backend.utils.CoolUtil;
 
 class NumOption extends TextOption {
-    public var changedCallback:Float->Void;
-    public var min:Float;
-    public var max:Float;
-    public var step:Float;
-    public var currentValue:Float;
-    public var parent:Dynamic;
-    public var optionName:String;
-	public var firstFrame:Bool = true;
+	public var changedCallback:Float->Void;
+	public var min:Float;
+	public var max:Float;
+	public var step:Float;
+	public var currentValue:Float;
+	public var parent:Dynamic;
+	public var optionName:String;
 
-    public var leftArrow:FlxSprite;
-    public var rightArrow:FlxSprite;
-    public var valueText:Alphabet;
+	var leftArrow:FlxSprite;
+	var rightArrow:FlxSprite;
+	var valueText:Alphabet;
 
-    public function new(text:String, desc:String, min:Float, max:Float, step:Float = 1, ?optionName:String, ?changedCallback:Float->Void = null, ?parent:Dynamic) {
-        this.changedCallback = changedCallback;
-        this.min = min;
-        this.max = max;
-        this.step = step;
-        this.optionName = optionName;
-        this.parent = parent = parent != null ? parent : Options;
+	var valueBoxWidth:Float = 0;
 
-        if (Reflect.field(parent, optionName) != null) currentValue = Reflect.field(parent, optionName);
+	var spacing:Int = 24;
+	var innerPad:Int = 8;
 
-        super(text, desc);
+	public function new(text:String, desc:String, min:Float, max:Float, step:Float = 1, ?optionName:String, ?changedCallback:Float->Void = null, ?parent:Dynamic) {
+		this.changedCallback = changedCallback;
+		this.min = min;
+		this.max = max;
+		this.step = step;
+		this.optionName = optionName;
+		this.parent = parent = parent != null ? parent : Options;
 
-        leftArrow = new FlxSprite();
-        leftArrow.loadGraphic(Paths.image("menus/ui/arrow_left"));
-        add(leftArrow);
+		if (Reflect.field(parent, optionName) != null) currentValue = Reflect.field(parent, optionName);
 
-        rightArrow = new FlxSprite();
-        rightArrow.loadGraphic(Paths.image("menus/ui/arrow_right"));
-        add(rightArrow);
+		super(text, desc);
 
-        valueText = new Alphabet(0, 0, Std.string(currentValue), "bold");
-        add(valueText);
-    }
+		var measure = new Alphabet(0, 0, Std.string(Std.int(max)), "bold");
+		valueBoxWidth = measure.width;
+		measure.destroy();
 
-	private function positionElements():Void {
-		var baseOffset = 90;
-		valueText.x = __text.x + __text.width + baseOffset;
-		valueText.y = __text.y + (__text.height - valueText.height)/2;
+		leftArrow = new FlxSprite();
+		leftArrow.loadGraphic(Paths.image("menus/ui/arrow_left"));
+		add(leftArrow);
 
-		leftArrow.x = valueText.x - leftArrow.width - 8;
-		leftArrow.y = __text.y + (__text.height - leftArrow.height)/2;
+		rightArrow = new FlxSprite();
+		rightArrow.loadGraphic(Paths.image("menus/ui/arrow_right"));
+		add(rightArrow);
 
-		rightArrow.x = valueText.x + valueText.width + 8;
-		rightArrow.y = __text.y + (__text.height - rightArrow.height)/2;
-
+		valueText = new Alphabet(0, 0, Std.string(currentValue), "bold");
+		add(valueText);
 	}
 
-    override function changeSelection(change:Int):Void {
-        if (locked) return;
-        currentValue = FlxMath.bound(currentValue + change * step, min, max);
-        valueText.text = Std.string(currentValue);
+	private function positionElements():Void {
+		var baseX = __text.x + __text.width + spacing;
 
-        Reflect.setField(parent, optionName, currentValue);
-        if (changedCallback != null) changedCallback(currentValue);
+		var textMidY = __text.y + (__text.height * 0.5);
 
-        CoolUtil.playMenuSFX(SCROLL);
-    }
+		leftArrow.x = baseX;
+		leftArrow.y = textMidY - (leftArrow.height * 0.5);
 
-    public override function update(elapsed:Float):Void {
-        super.update(elapsed);
+		var valueAreaX = leftArrow.x + leftArrow.width + spacing;
+		var boxW = valueBoxWidth; 
 
-		if (firstFrame) {
-			firstFrame = false;
-			positionElements();
+		valueText.x = valueAreaX + (boxW - valueText.width) * 0.5;
+		valueText.y = textMidY - (valueText.height * 0.5);
+
+		rightArrow.x = valueAreaX + boxW + spacing;
+		rightArrow.y = textMidY - (rightArrow.height * 0.5);
+	}
+
+	override function changeSelection(change:Int):Void {
+		if (locked) return;
+
+		var next = FlxMath.bound(currentValue + change * step, min, max);
+		if (next == currentValue) return;
+
+		currentValue = next;
+		valueText.text = Std.string(currentValue);
+
+		Reflect.setField(parent, optionName, currentValue);
+		if (changedCallback != null) changedCallback(currentValue);
+
+		CoolUtil.playMenuSFX(SCROLL);
+	}
+
+	public override function update(elapsed:Float):Void {
+		super.update(elapsed);
+
+		positionElements();
+
+		var mousePos = FlxG.mouse.getWorldPosition();
+		if (FlxG.mouse.justPressed) {
+			if (leftArrow.overlapsPoint(mousePos)) changeSelection(-1);
+			else if (rightArrow.overlapsPoint(mousePos)) changeSelection(1);
 		}
+	}
 
-        if (leftArrow.overlapsPoint(FlxG.mouse.getWorldPosition()) && FlxG.mouse.justPressed) changeSelection(-1);
-        if (rightArrow.overlapsPoint(FlxG.mouse.getWorldPosition()) && FlxG.mouse.justPressed) changeSelection(1);
-    }
-
-    override function select() {}
+	override function select() {}
 }
