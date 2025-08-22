@@ -169,6 +169,9 @@ class PauseSubState extends MusicBeatSubstate
 			case "Change Controls":
 				persistentDraw = false;
 				openSubState(new KeybindsOptions());
+				#if mobile
+				removeVPad();
+				#end
 			case "Change Options":
 				FlxG.switchState(new OptionsMenu((_) -> FlxG.switchState(new PlayState())));
 			case "Exit to charter":
