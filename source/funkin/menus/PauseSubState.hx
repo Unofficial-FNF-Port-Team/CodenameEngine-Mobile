@@ -145,7 +145,7 @@ class PauseSubState extends MusicBeatSubstate
 		var downP = controls.DOWN_P;
 		var scroll = FlxG.mouse.wheel;
 
-		if (upP || downP || scroll != 0)  // like this we wont break mods that expect a 0 change event when calling sometimes  - Nex
+		if (upP || downP || scroll != 0)
 			changeSelection((upP ? -1 : 0) + (downP ? 1 : 0) - scroll);
 
 		if (controls.ACCEPT)
@@ -188,9 +188,18 @@ class PauseSubState extends MusicBeatSubstate
 					CoolUtil.playMenuSong();
 					FlxG.switchState(PlayState.isStoryMode ? new StoryMenuState() : new FreeplayState());
 				}
-
 		}
 	}
+
+	override function closeSubState() {
+		persistentUpdate = true;
+		super.closeSubState();
+		#if mobile
+		addVPad(UP_DOWN, A);
+		addVPadCamera();
+		#end
+	}
+
 	override function destroy()
 	{
 		if(camera != FlxG.camera && _cameras != null) {
