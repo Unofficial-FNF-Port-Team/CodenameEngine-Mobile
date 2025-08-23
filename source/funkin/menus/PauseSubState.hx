@@ -177,9 +177,12 @@ class PauseSubState extends MusicBeatSubstate
 			case "Exit to charter":
 				FlxG.switchState(new Charter(PlayState.SONG.meta.name, PlayState.difficulty, PlayState.variation, false));
 			case "Exit to menu":
-				if (PlayState.chartingMode && Charter.undos.unsaved)
+				if (PlayState.chartingMode && Charter.undos.unsaved) {
+					#if mobile
+					removeVPad();
+					#end
 					game.saveWarn(false);
-				else {
+				} else {
 					if (Charter.instance != null) Charter.instance.__clearStatics();
 
 					// prevents certain notes to disappear early when exiting  - Nex
