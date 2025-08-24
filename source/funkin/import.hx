@@ -29,6 +29,11 @@ import funkin.mobile.utils.*;
 import funkin.mobile.backend.*;
 #end
 
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
+  
 import funkin.backend.system.Flags;
 import funkin.Types;
 
