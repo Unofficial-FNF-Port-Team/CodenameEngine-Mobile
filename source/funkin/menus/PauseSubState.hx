@@ -145,7 +145,7 @@ class PauseSubState extends MusicBeatSubstate
 		var downP = controls.DOWN_P;
 		var scroll = FlxG.mouse.wheel;
 
-		if (upP || downP || scroll != 0)  // like this we wont break mods that expect a 0 change event when calling sometimes  - Nex
+		if (upP || downP || scroll != 0)
 			changeSelection((upP ? -1 : 0) + (downP ? 1 : 0) - scroll);
 
 		if (controls.ACCEPT)
@@ -169,14 +169,20 @@ class PauseSubState extends MusicBeatSubstate
 			case "Change Controls":
 				persistentDraw = false;
 				openSubState(new KeybindsOptions());
+				#if mobile
+				removeVPad();
+				#end
 			case "Change Options":
 				FlxG.switchState(new OptionsMenu((_) -> FlxG.switchState(new PlayState())));
 			case "Exit to charter":
 				FlxG.switchState(new Charter(PlayState.SONG.meta.name, PlayState.difficulty, PlayState.variation, false));
 			case "Exit to menu":
-				if (PlayState.chartingMode && Charter.undos.unsaved)
+				if (PlayState.chartingMode && Charter.undos.unsaved) {
+					#if mobile
+					removeVPad();
+					#end
 					game.saveWarn(false);
-				else {
+				} else {
 					if (Charter.instance != null) Charter.instance.__clearStatics();
 
 					// prevents certain notes to disappear early when exiting  - Nex
@@ -185,9 +191,18 @@ class PauseSubState extends MusicBeatSubstate
 					CoolUtil.playMenuSong();
 					FlxG.switchState(PlayState.isStoryMode ? new StoryMenuState() : new FreeplayState());
 				}
-
 		}
 	}
+
+	override function closeSubState() {
+		persistentUpdate = true;
+		super.closeSubState();
+		#if mobile
+		addVPad(UP_DOWN, A);
+		addVPadCamera();
+		#end
+	}
+
 	override function destroy()
 	{
 		if(camera != FlxG.camera && _cameras != null) {

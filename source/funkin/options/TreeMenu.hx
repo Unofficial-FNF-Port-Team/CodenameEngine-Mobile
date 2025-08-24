@@ -39,6 +39,8 @@ class TreeMenu extends UIState {
 	var __drawer:TreeMenuDrawer;
 	var __treeCreated:Bool = false;
 
+	public var backBtn:FlxSprite;
+
 	public function new(?exitCallback:TreeMenu->Void,
 		scriptsAllowed:Bool = true, ?scriptName:String)
 	{
@@ -75,6 +77,15 @@ class TreeMenu extends UIState {
 		add(bgLabel);
 		add(titleLabel);
 		add(descLabel);
+
+		backBtn = new FlxSprite().loadAnimatedGraphic(Paths.image('menus/backButton'));
+		backBtn.antialiasing = true;
+		backBtn.scrollFactor.set();
+		backBtn.scale.set(0.7, 0.7);
+		backBtn.updateHitbox();
+		backBtn.x = FlxG.width - backBtn.width - 20;
+		backBtn.y = FlxG.height - backBtn.height - 20;
+		add(backBtn);
 
 		FlxG.camera.scroll.x = -FlxG.width;
 		menuChanged();
@@ -232,13 +243,33 @@ class TreeMenu extends UIState {
 			}
 		}
 
-		// in case path gets so long it goes offscreen, ALTHOUGH this nevers happens anyway since we have set a expected width to the label.
-		//titleLabel.x = lerp(titleLabel.x, Math.max(0, FlxG.width - 4 - titleLabel.width), 0.125);
+		if (backBtn != null) {
+			var justPressed = false;
+
+			#if mobile
+			for (touch in FlxG.touches.list)
+				if (touch.justPressed && touch.overlaps(backBtn))
+					justPressed = true;
+			#else
+			if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(backBtn))
+				justPressed = true;
+			#end
+
+			if (justPressed) {
+				backBtn.animation.play('back');
+				popMenu();
+			}
+		}
 	}
 
 	override function destroy() {
 		super.destroy();
 		destroyPreviousMenus();
+
+		if (backBtn != null) {
+			backBtn.destroy();
+			backBtn = null;
+		}
 	}
 
 	override function onResize(width:Int, height:Int) {
