@@ -51,7 +51,7 @@ class MobileUtil {
      } catch (e:Dynamic) {
     trace(e);
   if(!FileSystem.exists(MobileUtil.getDirectory())) {
-    NativeAPI.showMessageBox("Seems like you didnt enabled permissions requested to run the game.", 'Uncaught Error');
+    NativeAPI.showMessageBox("Seems like you didnt enabled permissions requested to run the game. Please enable them and add files to ${MobileUtil.getDirectory()}. Press OK to close the Game.", 'Uncaught Error');
     FileSystem.createDirectory(MobileUtil.getDirectory());
      System.exit(0);
      }
