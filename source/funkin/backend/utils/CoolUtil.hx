@@ -152,8 +152,8 @@ final class CoolUtil
         #if sys
         try {
             addMissingFolders(Path.directory(path));
-            if(content is Bytes) sys.io.File.saveBytes(Sys.getCwd() + path, content);
-            else sys.io.File.saveContent(Sys.getCwd() + path, content);
+            if(content is Bytes) sys.io.File.saveBytes(#if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end path, content);
+            else sys.io.File.saveContent(#if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end path, content);
         } catch(e) {
             var errMsg:String = 'Error while trying to save the file: ${Std.string(e).replace('\n', ' ')}';
             Logs.error(errMsg);
