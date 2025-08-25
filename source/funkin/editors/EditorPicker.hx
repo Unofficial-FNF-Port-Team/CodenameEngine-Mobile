@@ -6,50 +6,7 @@ import flixel.math.FlxPoint;
 class EditorPicker extends MusicBeatSubstate {
 	public var bg:FlxSprite;
 
-	// Name is for backwards compatibility, don't use it, use id instead
-	public var options:Array<Editor> = [
-		{
-			name: "Chart Editor",
-			id: "chart",
-			state: funkin.editors.charter.CharterSelection
-		},
-		{
-			name: "Character Editor",
-			id: "character",
-			state: funkin.editors.character.CharacterSelection
-		},
-		{
-			name: "Stage Editor",
-			id: "stage",
-			state: funkin.editors.stage.StageSelection
-		},
-		{
-			name: "Alphabet Editor",
-			id: "alphabet",
-			state: funkin.editors.alphabet.AlphabetSelection
-		},
-		#if (debug || debug_ui)
-		{
-			name: "UI Debug State",
-			id: "uiDebug",
-			state: UIDebugState
-		},
-		#end
-		{
-			name: "Wiki",
-			id: "wiki",
-			state: null,
-			onClick: function() {
-				CoolUtil.openURL(Flags.URL_WIKI);
-			}
-		},
-		{
-			name: "Return",
-			id: "return",
-			state: funkin.menus.MainMenuState
-		}
-	];
-
+	public var options:Array<Editor>;
 	public var sprites:Array<EditorPickerOption> = [];
 
 	public var curSelected:Int = 0;
@@ -67,6 +24,52 @@ class EditorPicker extends MusicBeatSubstate {
 	public override function create() {
 		super.create();
 
+		options = [
+			{
+				name: "Chart Editor",
+				id: "chart",
+				state: funkin.editors.charter.CharterSelection
+			},
+			{
+				name: "Character Editor",
+				id: "character",
+				state: funkin.editors.character.CharacterSelection
+			},
+			{
+				name: "Stage Editor",
+				id: "stage",
+				state: funkin.editors.stage.StageSelection
+			},
+			{
+				name: "Alphabet Editor",
+				id: "alphabet",
+				state: funkin.editors.alphabet.AlphabetSelection
+			},
+			#if (debug || debug_ui)
+			{
+				name: "UI Debug State",
+				id: "uiDebug",
+				state: UIDebugState
+			},
+			#end
+			{
+				name: "Wiki",
+				id: "wiki",
+				state: null,
+				onClick: function() {
+					CoolUtil.openURL(Flags.URL_WIKI);
+				}
+			},
+			{
+				name: "Return",
+				id: "return",
+				state: null,
+				onClick: function() {
+					close();
+				}
+			}
+		];
+
 		camera = subCam = new FlxCamera();
 		subCam.bgColor = 0;
 		FlxG.cameras.add(subCam, false);
@@ -79,7 +82,7 @@ class EditorPicker extends MusicBeatSubstate {
 		add(bg);
 
 		optionHeight = FlxG.height / options.length;
-		for(k=>o in options) {
+		for (k=>o in options) {
 			var visualName = (o.id != null) ? TU.translate("editor." + o.id + ".name") : o.name;
 			var spr = new EditorPickerOption(visualName, o.id, optionHeight);
 			spr.y = k * optionHeight;
@@ -107,11 +110,11 @@ class EditorPicker extends MusicBeatSubstate {
 		if (curMousePos.x != oldMousePos.x || curMousePos.y != oldMousePos.y) {
 			oldMousePos.set(curMousePos.x, curMousePos.y);
 			curSelected = -1;
-			changeSelection(Std.int(curMousePos.y / optionHeight)+1);
+			changeSelection(Std.int(curMousePos.y / optionHeight) + 1);
 		}
 
 		if (controls.ACCEPT || FlxG.mouse.justReleased) {
-			if(options[curSelected].onClick != null)
+			if (options[curSelected].onClick != null)
 				options[curSelected].onClick();
 			else if (options[curSelected].state != null) {
 				selected = true;
@@ -133,7 +136,6 @@ class EditorPicker extends MusicBeatSubstate {
 			} else {
 				CoolUtil.openURL(Flags.URL_EDITOR_FALLBACK);
 			}
-
 		}
 		if (controls.BACK #if android || FlxG.android.justReleased.BACK #end)
 			close();
@@ -152,9 +154,9 @@ class EditorPicker extends MusicBeatSubstate {
 	public function changeSelection(change:Int) {
 		if (change == 0) return;
 
-		curSelected = FlxMath.wrap(curSelected + change, 0, sprites.length-1);
+		curSelected = FlxMath.wrap(curSelected + change, 0, sprites.length - 1);
 
-		for(o in sprites)
+		for (o in sprites)
 			o.selected = false;
 		sprites[curSelected].selected = true;
 	}
@@ -183,7 +185,7 @@ class EditorPickerOption extends FlxTypedSpriteGroup<FlxSprite> {
 
 		FlxG.mouse.visible = true;
 		iconSpr = new FlxSprite();
-		if(iconID != null)
+		if (iconID != null)
 			iconSpr.loadGraphic(Paths.image('editors/icons/$iconID'));
 		else
 			iconSpr.exists = false;

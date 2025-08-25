@@ -69,7 +69,7 @@ class ModSwitchMenu extends MusicBeatSubstate {
 
 		if (controls.ACCEPT) {
 			if (mods[curSelected] == "RETURN") {
-				FlxG.switchState(new MainMenuState());
+				close();
 			} else {
 				ModsFolder.switchMod(mods[curSelected]);
 				close();
