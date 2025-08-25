@@ -149,18 +149,18 @@ final class CoolUtil
 	 * @param content Content of the file to save (as String or Bytes).
 	 */
 	@:noUsing public static function safeSaveFile(path:String, content:OneOfTwo<String, Bytes>, showErrorBox:Bool = true) {
-		#if sys
-		try {
-			addMissingFolders(Path.directory(path));
-			if(content is Bytes) sys.io.File.saveBytes(path, content);
-			else sys.io.File.saveContent(path, content);
-		} catch(e) {
-			var errMsg:String = 'Error while trying to save the file: ${Std.string(e).replace('\n', ' ')}';
-			Logs.error(errMsg);
-			if(showErrorBox) funkin.backend.utils.NativeAPI.showMessageBox("Codename Engine Warning", errMsg, MSG_WARNING);
-		}
-		#end
-	}
+        #if sys
+        try {
+            addMissingFolders(Path.directory(path));
+            if(content is Bytes) sys.io.File.saveBytes(Sys.getCwd() + path, content);
+            else sys.io.File.saveContent(Sys.getCwd() + path, content);
+        } catch(e) {
+            var errMsg:String = 'Error while trying to save the file: ${Std.string(e).replace('\n', ' ')}';
+            Logs.error(errMsg);
+            if(showErrorBox) funkin.backend.utils.NativeAPI.showMessageBox("Codename Engine Warning", errMsg, MSG_WARNING);
+        }
+        #end
+    }
 
 	/**
 	 * Gets file attributes from a file or a folder adding eventual missing folders in the path
