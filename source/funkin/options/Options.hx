@@ -63,8 +63,8 @@ class Options
 	public static var editorCharacterPrettyPrint:Bool = true;
 	public static var editorStagePrettyPrint:Bool = true;
 
-	public static var editorsResizable:Bool = true;
-	public static var bypassEditorsResize:Bool = #if desktop false #else true #end;
+	public static var editorsResizable:Bool = #if desktop true #else false #end;
+	public static var bypassEditorsResize:Bool = false;
 	public static var maxUndos:Int = 120;
 	public static var songOffsetAffectEditors:Bool = false;
 
