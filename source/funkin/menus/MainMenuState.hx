@@ -8,6 +8,7 @@ import funkin.backend.scripting.events.menu.MenuChangeEvent;
 import funkin.backend.scripting.events.NameEvent;
 import funkin.menus.credits.CreditsMain;
 import funkin.options.OptionsMenu;
+import funkin.mobile.backend.TouchInput;
 import lime.app.Application;
 
 using StringTools;
@@ -26,6 +27,8 @@ class MainMenuState extends MusicBeatState
 	var versionText:FunkinText;
 
 	var devModeWarning:FunkinText;
+	var modsButton:FlxSprite;
+	var editorsButton:FlxSprite;
 
 	public var canAccessDebugMenus:Bool = !Flags.DISABLE_EDITORS;
 
@@ -93,11 +96,26 @@ class MainMenuState extends MusicBeatState
 		add(devModeWarning);
 		devModeWarning.scrollFactor.set();
 		devModeWarning.alpha = 0;
-		#if mobile
-		addVPad(UP_DOWN, A_B_X_Y);
-		addVPadCamera();
-		vPad.visible = true;
-		#end
+
+		// Mods Button
+		modsButton = new FlxSprite().loadAnimatedGraphic(Paths.image('menus/ui/mods_button'));
+		modsButton.antialiasing = true;
+		modsButton.scrollFactor.set();
+		modsButton.scale.set(0.9, 0.9);
+		modsButton.updateHitbox();
+		modsButton.x = FlxG.width - modsButton.width - 20;
+		modsButton.y = FlxG.height - modsButton.height - 60;
+		add(modsButton);
+
+		// Editor Button
+		editorsButton = new FlxSprite().loadAnimatedGraphic(Paths.image('menus/ui/editor_button'));
+		editorsButton.antialiasing = true;
+		editorsButton.scrollFactor.set();
+		editorsButton.scale.set(0.9, 0.9);
+		editorsButton.updateHitbox();
+		editorsButton.x = 20;
+		editorsButton.y = FlxG.height - editorsButton.height - 60;
+		add(editorsButton);
 	}
 
 	var selectedSomethin:Bool = false;
@@ -112,23 +130,13 @@ class MainMenuState extends MusicBeatState
 		if (!selectedSomethin)
 		{
 			if (canAccessDebugMenus) {
-				if (controls.DEV_ACCESS #if mobile || vPad.buttonY.justPressed #end) {
+				if (controls.DEV_ACCESS) {
 					persistentUpdate = false;
 					persistentDraw = true;
 					openSubState(new funkin.editors.EditorPicker());
-					#if mobile
-					removeVPad();
-					#end
 				}
-				/*
-				if (FlxG.keys.justPressed.SEVEN)
-					FlxG.switchState(new funkin.desktop.DesktopMain());
-				if (FlxG.keys.justPressed.EIGHT) {
-					CoolUtil.safeSaveFile("chart.json", Json.stringify(funkin.backend.chart.Chart.parse("dadbattle", "hard")));
-				}
-				*/
 			}
-			if (!Options.devMode && FlxG.keys.justPressed.SEVEN #if mobile && vPad.buttonY.justPressed #end) {
+			if (!Options.devMode && FlxG.keys.justPressed.SEVEN) {
 				FlxG.sound.play(Paths.sound(Flags.DEFAULT_EDITOR_DELETE_SOUND));
 				if (devModeCount++ == 2) {
 					FlxTween.tween(devModeWarning, {alpha: 1}, 0.4);
@@ -144,18 +152,19 @@ class MainMenuState extends MusicBeatState
 			var downP = controls.DOWN_P;
 			var scroll = FlxG.mouse.wheel;
 
-			if (upP || downP || scroll != 0)  // like this we wont break mods that expect a 0 change event when calling sometimes  - Nex
+			if (upP || downP || scroll != 0)
 				changeItem((upP ? -1 : 0) + (downP ? 1 : 0) - scroll);
 
-			if (controls.BACK)
+			#if mobile
+			handleTouchInput();
+			#end
+
+			if (controls.BACK #if mobile || TouchInput.BACK() #end)
 				FlxG.switchState(new TitleState());
 
 			#if MOD_SUPPORT
-			if (controls.SWITCHMOD #if mobile || vPad.buttonX.justPressed #end) {
+			if (controls.SWITCHMOD) {
 				openSubState(new ModSwitchMenu());
-				#if mobile
-				removeVPad();
-			  	#end
 				openSubState(new ModSwitchMenu());
 				persistentUpdate = false;
 				persistentDraw = true;
@@ -175,11 +184,47 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
+	#if mobile
+	public function handleTouchInput():Void
+	{
+		if (TouchInput.justPressed(modsButton)) {
+			#if MOD_SUPPORT
+			CoolUtil.playMenuSFX(CONFIRM);
+			openSubState(new ModSwitchMenu());
+			persistentUpdate = false;
+			persistentDraw = true;
+			#end
+		}
+
+		if (TouchInput.justPressed(editorsButton)) {
+			if (canAccessDebugMenus) {
+				CoolUtil.playMenuSFX(CONFIRM);
+				persistentUpdate = false;
+				persistentDraw = true;
+				openSubState(new funkin.editors.EditorPicker());
+			}
+		}
+
+		menuItems.forEach(function(menuItem:FlxSprite) {
+			if (TouchInput.justPressed(menuItem)) {
+				if (menuItem.ID != curSelected) {
+					changeItem(menuItem.ID - curSelected);
+				} else {
+					selectItem();
+				}
+				menuItem.animation.play('selected');
+			}
+		});
+	}
+	#end
+
 	public override function switchTo(nextState:FlxState):Bool {
 		try {
 			menuItems.forEach(function(spr:FlxSprite) {
 				FlxTween.tween(spr, {alpha: 0}, 0.5, {ease: FlxEase.quintOut});
 			});
+			if (modsButton != null) FlxTween.tween(modsButton, {alpha: 0}, 0.5, {ease: FlxEase.quintOut});
+			if (editorsButton != null) FlxTween.tween(editorsButton, {alpha: 0}, 0.5, {ease: FlxEase.quintOut});
 		}
 		return super.switchTo(nextState);
 	}
@@ -200,11 +245,12 @@ class MainMenuState extends MusicBeatState
 			{
 				case 'story mode': FlxG.switchState(new StoryMenuState());
 				case 'freeplay': FlxG.switchState(new FreeplayState());
-				case 'donate', 'credits': FlxG.switchState(new CreditsMain());  // kept donate for not breaking scripts, if you don't want donate to bring you to the credits menu, thats easy softcodable  - Nex
+				case 'donate', 'credits': FlxG.switchState(new CreditsMain());
 				case 'options': FlxG.switchState(new OptionsMenu());
 			}
 		});
 	}
+	
 	function changeItem(huh:Int = 0)
 	{
 		var event = event("onChangeItem", EventManager.get(MenuChangeEvent).recycle(curSelected, FlxMath.wrap(curSelected + huh, 0, menuItems.length-1), huh, huh != 0));

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<TextureAtlas imagePath="MODS.png">
+	<!-- Created with Adobe Flash CS6 version 12.0.0.481 -->
+	<!-- http://www.adobe.com/products/flash.html -->
+	<!-- You cannot use this asset for any of your projects -->
+	<SubTexture name="MODS0000" x="10" y="10" width="169" height="152" frameX="-6" frameY="-13" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0001" x="189" y="10" width="169" height="152" frameX="-6" frameY="-13" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0002" x="368" y="10" width="136" height="122" frameX="-23" frameY="-30" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0003" x="514" y="10" width="136" height="122" frameX="-23" frameY="-30" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0004" x="660" y="10" width="183" height="177"/>
+	<SubTexture name="MODS0005" x="10" y="197" width="183" height="177"/>
+	<SubTexture name="MODS0006" x="203" y="197" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0007" x="381" y="197" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0008" x="559" y="197" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0009" x="737" y="197" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0010" x="10" y="384" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0011" x="188" y="384" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0012" x="366" y="384" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+	<SubTexture name="MODS0013" x="544" y="384" width="168" height="152" frameX="-6" frameY="-14" frameWidth="183" frameHeight="177"/>
+</TextureAtlas>
