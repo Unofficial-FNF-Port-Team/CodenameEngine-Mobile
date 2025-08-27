@@ -19,7 +19,7 @@ using StringTools;
 
 /** 
 * @Authors MaysLastPlay, MarioMaster (MasterX-39), Dechis (dx7405)
-* @version: 0.2.3
+* @version: 0.3.0
 **/
 
 class MobileUtil {
