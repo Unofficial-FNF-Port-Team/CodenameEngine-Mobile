@@ -9,6 +9,9 @@ import funkin.backend.utils.FunkinParentDisabler;
 import funkin.game.cutscenes.dialogue.*;
 import haxe.io.Path;
 import haxe.xml.Access;
+#if mobile
+import funkin.mobile.backend.TouchInput;
+#end
 
 /**
  * Substate made for dialogue cutscenes. To use it in a scripted cutscene, call `startDialogue`.
@@ -133,7 +136,7 @@ class DialogueCutscene extends ScriptedCutscene {
 
 	public override function update(elapsed:Float) {
 		super.update(elapsed);
-		if(controls.ACCEPT) {
+		if(controls.ACCEPT #if mobile || TouchInput.justTouched() #end) {
 			if(dialogueBox.dialogueEnded) next();
 			else dialogueBox.text.skip();
 		}
