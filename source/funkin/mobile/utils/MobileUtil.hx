@@ -90,7 +90,7 @@ class MobileUtil {
         trace('Assets successfully copied to: $targetPath');
     } catch (e:Dynamic) {
         trace('Error copying assets: $e');
-        NativeAPI.showMessageBox('Error copying game files. Check storage permissions.', 'Error');
+        NativeAPI.showMessageBox('Error', 'Error copying game files. Check storage permissions or re-open the game to see what happens.');
     }
     #end
   }
@@ -259,7 +259,7 @@ class MobileUtil {
         
     } catch (e:Dynamic) {
         trace('Error copying assets: $e');
-        NativeAPI.showMessageBox('Error copying game files. Check storage permissions.', 'Error');
+        NativeAPI.showMessageBox('Error', 'Error copying game files. Check storage permissions or re-open the game to see what happens.');
     }
     #end
   }
