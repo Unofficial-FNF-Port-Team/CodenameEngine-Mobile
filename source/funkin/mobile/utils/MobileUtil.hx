@@ -19,7 +19,7 @@ using StringTools;
 
 /** 
 * @Authors MaysLastPlay, MarioMaster (MasterX-39), Dechis (dx7405)
-* @version: 0.3.1
+* @version: 0.3.0
 **/
 
 class MobileUtil {
@@ -29,33 +29,67 @@ class MobileUtil {
    * Get the directory for the application. (External for Android Platform and Internal for iOS Platform.)
    */
   public static function getDirectory():String {
-    return if (VERSION.SDK_INT >= 32) '/storage/emulated/0/.CodenameEngine/' else '/storage/emulated/0/CodenameEngine/';
+    return '/storage/emulated/0/.CodenameEngine/';
   }
 
   /**
    * Requests Storage Permissions on Android Platform.
    */
   public static function getPermissions():Void {
-    if(VERSION.SDK_INT >= 33){
-       if (!Environment.isExternalStorageManager()) {
-         Settings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
-       }
-    } else {
-      Permissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
-    }
-
     try {
-      if(!FileSystem.exists(MobileUtil.getDirectory()))
-        FileSystem.createDirectory(MobileUtil.getDirectory());
+        #if android
+        if (VERSION.SDK_INT >= 30) {
+            if (!Environment.isExternalStorageManager()) {
+                Settings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
+            }
+        }
+        else if (VERSION.SDK_INT == 29) {
+            try {
+                if (!Environment.isExternalStorageManager()) {
+                    Settings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
+                }
+            } catch (e1:Dynamic) {
+                trace('Fallback 1 failed: $e1');
+            }
+
+            try {
+                Permissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+            } catch (e2:Dynamic) {
+                trace('Fallback 2 failed: $e2');
+            }
+
+            try {
+                if (!FileSystem.exists(MobileUtil.getDirectory())) {
+                    FileSystem.createDirectory(MobileUtil.getDirectory());
+                }
+            } catch (e3:Dynamic) {
+                trace('Fallback 3 failed: $e3');
+            }
+        }
+        else {
+            Permissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+        }
+        #end
+
+        if (!FileSystem.exists(MobileUtil.getDirectory())) {
+            FileSystem.createDirectory(MobileUtil.getDirectory());
+        }
     } catch (e:Dynamic) {
-      trace(e);
-      if(!FileSystem.exists(MobileUtil.getDirectory())) {
-        NativeAPI.showMessageBox("Uncaught Error", "It seems you did not enable the required permissions to run the game. Please enable them and add files to ${MobileUtil.getDirectory()}. Press OK to close the game.");
-        FileSystem.createDirectory(MobileUtil.getDirectory());
-        System.exit(0);
-      }
+        trace('Error on creating directory: $e');
+
+        if (!FileSystem.exists(MobileUtil.getDirectory())) {
+            NativeAPI.showMessageBox(
+				'Uncaught Error',
+                "It seems you did not enable the required permissions to run the game. " +
+                "Please enable them and add files to ${MobileUtil.getDirectory()}. Press OK to close the game."
+            );
+            try {
+                FileSystem.createDirectory(MobileUtil.getDirectory());
+            } catch(_) {}
+            System.exit(0);
+        }
     }
-  }
+}
 
   /**
    * Saves a file to the external storage.
