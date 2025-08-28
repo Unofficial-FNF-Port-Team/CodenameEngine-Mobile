@@ -29,8 +29,14 @@ class MobileUtil {
    * Get the directory for the application. (External for Android Platform and Internal for iOS Platform.)
    */
   public static function getDirectory():String {
-    return '/storage/emulated/0/.CodenameEngine/';
-  }
+    #if android
+    if (VERSION.SDK_INT == 29) {
+        return "/storage/emulated/0/Android/media/com.yoshman29.codenameengine/";
+    } else {
+        return "/storage/emulated/0/.CodenameEngine/";
+    }
+	#end
+}
 
   /**
    * Requests Storage Permissions on Android Platform.
