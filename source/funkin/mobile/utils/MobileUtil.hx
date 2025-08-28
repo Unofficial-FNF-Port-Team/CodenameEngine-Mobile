@@ -19,7 +19,7 @@ using StringTools;
 
 /** 
 * @Authors MaysLastPlay, MarioMaster (MasterX-39), Dechis (dx7405)
-* @version: 0.3.0
+* @version: 0.3.1
 **/
 
 class MobileUtil {
@@ -29,7 +29,7 @@ class MobileUtil {
    * Get the directory for the application. (External for Android Platform and Internal for iOS Platform.)
    */
   public static function getDirectory():String {
-    return '/storage/emulated/0/.CodenameEngine/';
+    return if (VERSION.SDK_INT >= 32) '/storage/emulated/0/.CodenameEngine/' else '/storage/emulated/0/CodenameEngine/';
   }
 
   /**
@@ -50,7 +50,7 @@ class MobileUtil {
     } catch (e:Dynamic) {
       trace(e);
       if(!FileSystem.exists(MobileUtil.getDirectory())) {
-        NativeAPI.showMessageBox("It seems you did not enable the required permissions to run the game. Please enable them and add files to ${MobileUtil.getDirectory()}. Press OK to close the game.", 'Uncaught Error');
+        NativeAPI.showMessageBox("Uncaught Error", "It seems you did not enable the required permissions to run the game. Please enable them and add files to ${MobileUtil.getDirectory()}. Press OK to close the game.");
         FileSystem.createDirectory(MobileUtil.getDirectory());
         System.exit(0);
       }
