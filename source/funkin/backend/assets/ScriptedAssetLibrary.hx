@@ -21,7 +21,7 @@ class ScriptedAssetLibrary extends ModsFolderLibrary {
 	private static var nullValue:Dynamic = {};
 
 	public function new(scriptName:String, args:Array<Dynamic> = null, basePath:Null<String> = null, libName:String="assets", ?modName:String) {
-		if(basePath == null) basePath = #if android MobileUtil.getDirectory() + #else Sys.getCwd() + #end "./assets/";
+		if(basePath == null) basePath = #if mobile MobileUtil.getDirectory() + #else Sys.getCwd() + #end "./assets/";
 		if(modName == null) modName = scriptName;
 		super(basePath, libName, modName);
 		this.scriptName = scriptName;

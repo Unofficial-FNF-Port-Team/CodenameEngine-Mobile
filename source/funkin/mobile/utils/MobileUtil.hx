@@ -5,6 +5,7 @@ import extension.androidtools.os.Build.VERSION;
 import extension.androidtools.os.Environment;
 import extension.androidtools.Permissions;
 import extension.androidtools.Settings;
+#end
 
 import lime.system.System;
 import lime.app.Application;
@@ -35,7 +36,11 @@ class MobileUtil {
     } else {
         return "/storage/emulated/0/.CodenameEngine/";
     }
-	#end
+    #elseif ios
+    return System.documentsDirectory;
+    #else
+    return "";
+    #end
 }
 
   /**
@@ -115,7 +120,7 @@ class MobileUtil {
    * @param targetPath Destination path (optional, uses getDirectory() + "assets/" if not specified)
    */
   public static function copyAssetsFromAPK(sourcePath:String = "assets/", targetPath:String = null):Void {
-    #if android
+    #if mobile
     if (targetPath == null) {
         targetPath = getDirectory() + "assets/";
     }
@@ -139,7 +144,7 @@ class MobileUtil {
    * Helper function to copy assets recursively
    */
   private static function copyAssetsRecursively(sourcePath:String, targetPath:String):Void {
-    #if android
+    #if mobile
     try {
         var cleanSourcePath = sourcePath;
         if (StringTools.endsWith(cleanSourcePath, "/")) {
@@ -195,7 +200,7 @@ class MobileUtil {
    * Creates directories recursively
    */
   private static function createDirectoryRecursive(path:String):Void {
-    #if android
+    #if mobile
     if (FileSystem.exists(path)) return;
     
     var pathParts = path.split("/");
@@ -225,7 +230,7 @@ class MobileUtil {
    */
   public static function copyAssetsWithProgress(sourcePath:String = "assets/", targetPath:String = null, 
                                               onProgress:String->Int->Int->Void = null, onComplete:Void->Void = null):Void {
-    #if android
+    #if mobile
     if (targetPath == null) {
         targetPath = getDirectory() + "assets/";
     }
@@ -308,7 +313,7 @@ class MobileUtil {
    * Counts total number of asset files for progress
    */
   private static function countAssetsFiles(sourcePath:String):Int {
-    #if android
+    #if mobile
     var count = 0;
     var cleanSourcePath = sourcePath;
     if (StringTools.endsWith(cleanSourcePath, "/")) {
@@ -340,7 +345,7 @@ class MobileUtil {
    * Checks if assets have already been copied
    */
   public static function areAssetsCopied(sourcePath:String = "assets/", targetPath:String = null):Bool {
-    #if android
+    #if mobile
     if (targetPath == null) {
         targetPath = getDirectory() + "assets/";
     }
@@ -362,7 +367,7 @@ class MobileUtil {
    * Counts files in a directory recursively
    */
   private static function countFilesInDirectory(path:String):Int {
-    #if android
+    #if mobile
     if (!FileSystem.exists(path)) return 0;
     
     var count = 0;
@@ -383,4 +388,3 @@ class MobileUtil {
     #end
   }
 }
-#end
