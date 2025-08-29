@@ -874,6 +874,12 @@ class PlayState extends MusicBeatState
 			e.cameras = [camHUD];
 		#end
 
+		#if ios
+		PauseButtonManager.showPauseButtonOnCamera(camHUD, null, function() {
+			pauseGame();
+		});
+		#end
+		
 		#if mobile addMControls(); #end
 
 		startingSong = true;
@@ -1353,6 +1359,10 @@ class PlayState extends MusicBeatState
 	{
 		scripts.call("update", [elapsed]);
 
+		#if ios
+		PauseButtonManager.update();
+		#end
+
 		if (inCutscene) {
 			super.update(elapsed);
 			scripts.call("postUpdate", [elapsed]);
@@ -1706,7 +1716,9 @@ class PlayState extends MusicBeatState
 		inst.stop();
 		vocals.stop();
 		#if mobile mcontrols.visible = false; #end
-
+		#if ios
+		PauseButtonManager.hidePauseButton();
+		#end
 		if (validScore) {
 			#if !switch
 			FunkinSave.setSongHighscore(SONG.meta.name, difficulty, variation, {
