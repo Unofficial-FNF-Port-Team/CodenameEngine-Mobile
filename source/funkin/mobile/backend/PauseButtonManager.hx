@@ -130,14 +130,15 @@ class PauseButtonManager
         {
             var justPressed = false;
             
-            for (touch in FlxG.touches.list) 
-            {
-                if (touch.justPressed && touch.overlaps(manager.pauseButton)) 
-                {
-                    justPressed = true;
-                    break;
-                }
-            }
+			for (touch in FlxG.touches.list)
+			{
+				var touchPos = touch.getWorldPosition(manager.pauseButton.cameras[0]); 
+				if (touch.justPressed && manager.pauseButton.overlapsPoint(touchPos, true, manager.pauseButton.cameras[0]))
+				{
+					justPressed = true;
+					break;
+				}
+			}
             
             if (justPressed) 
             {

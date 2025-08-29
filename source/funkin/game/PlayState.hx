@@ -874,11 +874,9 @@ class PlayState extends MusicBeatState
 			e.cameras = [camHUD];
 		#end
 
-		#if ios
 		PauseButtonManager.showPauseButtonOnCamera(camHUD, null, function() {
 			pauseGame();
 		});
-		#end
 		
 		#if mobile addMControls(); #end
 
@@ -1359,9 +1357,7 @@ class PlayState extends MusicBeatState
 	{
 		scripts.call("update", [elapsed]);
 
-		#if ios
 		PauseButtonManager.update();
-		#end
 
 		if (inCutscene) {
 			super.update(elapsed);
