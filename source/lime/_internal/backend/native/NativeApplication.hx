@@ -12,6 +12,7 @@ import lime.system.Clipboard;
 import lime.system.Display;
 import lime.system.DisplayMode;
 import lime.system.JNI;
+import lime.system.Orientation;
 import lime.system.Sensor;
 import lime.system.SensorType;
 import lime.system.System;
