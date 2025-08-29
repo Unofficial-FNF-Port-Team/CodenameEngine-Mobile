@@ -37,10 +37,11 @@ class PauseButtonManager
     
     /**
      * Main function to show the pause button on mobile devices
+	 * @param camera - Camera where the button will be displayed
      * @param parent - Group where the button will be added (optional)
      * @param onClick - Callback for when the button is clicked (optional)
      */
-    public static function showPauseButton(?parent:FlxGroup, ?onClick:Void->Void):Void 
+    public static function showPauseButtonOnCamera(camera:flixel.FlxCamera, ?parent:FlxGroup, ?onClick:Void->Void):Void 
     {
         #if mobile
         var manager = getInstance();
@@ -62,7 +63,7 @@ class PauseButtonManager
         
         manager.pauseButton.animation.play("idle");
         
-        manager.pauseButton.cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+        manager.pauseButton.cameras = [camera];
         
         manager.onClickCallback = onClick;
         
