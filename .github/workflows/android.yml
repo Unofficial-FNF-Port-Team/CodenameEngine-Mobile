@@ -68,7 +68,7 @@ jobs:
             }
       - name: Save Current Cache
         id: cache-release-build-android-save
-        uses: actions/cache/save@main
+        uses: actions/cache/save@v4
         with:
           path: |
             .haxelib/
