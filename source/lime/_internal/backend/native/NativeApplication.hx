@@ -12,7 +12,6 @@ import lime.system.Clipboard;
 import lime.system.Display;
 import lime.system.DisplayMode;
 import lime.system.JNI;
-import lime.system.Orientation;
 import lime.system.Sensor;
 import lime.system.SensorType;
 import lime.system.System;
@@ -23,6 +22,10 @@ import lime.ui.KeyCode;
 import lime.ui.KeyModifier;
 import lime.ui.Touch;
 import lime.ui.Window;
+
+#if ios
+import lime.system.Orientation;
+#end
 
 #if !lime_debug
 @:fileXml('tags="haxe,release"')
