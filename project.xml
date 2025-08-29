@@ -243,7 +243,12 @@
 	  <config:android permission="android.permission.ACCESS_NETWORK_STATE" />
 	  <config:android permission="android.permission.CAPTURE_AUDIO_OUTPUT" />
       <certificate path="cne-mobile.keystore" password="codename" alias="mlp-my-beloved-:3" alias-password="codename" unless="debug" />
-	  </section>
+	</section>
+
+	<section if="ios">
+	  <haxedef name="SHARE_MOBILE_FILES" />
+      <config:ios category_type="public.app-category.music-games" />
+	</section>
 
 	<haxedef name="HXCPP_M32" if="32bit" />
 	<haxedef name="HXCPP_DEBUG_LINK" if="debug" />
