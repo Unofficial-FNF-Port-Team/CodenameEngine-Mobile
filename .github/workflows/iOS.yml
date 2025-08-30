@@ -12,20 +12,12 @@ jobs:
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.4
-      - name: Restore existing build cache for faster compilation
-        uses: actions/cache@v4
-        with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-ios
-          path: |
-            .haxelib/
-            export/release/ios/CodenameEngine/haxe/
-          restore-keys: |
-            cache-build-ios
       - name: Install Libraries
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s
-
+          haxelib remove lime
+          haxelib git lime https://github.com/th2l-devs/lime --quiet
+          haxelib run lime rebuild hxcpp
       - name: Compile
         run: haxelib run lime build ios -clean -nosign
       - name: Making ipa file
