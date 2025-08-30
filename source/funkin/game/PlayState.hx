@@ -873,10 +873,6 @@ class PlayState extends MusicBeatState
 		for(e in [healthBar, healthBarBG, iconP1, iconP2, scoreTxt, missesTxt, accuracyTxt])
 			e.cameras = [camHUD];
 		#end
-
-		PauseButtonManager.showPauseButtonOnCamera(camHUD, null, function() {
-			pauseGame();
-		});
 		
 		#if mobile addMControls(); #end
 
@@ -984,7 +980,13 @@ class PlayState extends MusicBeatState
 
 			if (gameAndCharsEvent("onStartCountdown", new CancellableEvent()).cancelled) return;
 		}
-		#if mobile mcontrols.visible = true; #end
+
+		#if mobile
+		PauseButtonManager.showPauseButtonOnCamera(camHUD, null, function() {
+		pauseGame();
+		});
+		mcontrols.visible = true;
+		#end
 
 		startedCountdown = true;
 		Conductor.songPosition = 0;
@@ -1357,7 +1359,9 @@ class PlayState extends MusicBeatState
 	{
 		scripts.call("update", [elapsed]);
 
+		#if mobile
 		PauseButtonManager.update();
+		#end
 
 		if (inCutscene) {
 			super.update(elapsed);
@@ -1711,9 +1715,9 @@ class PlayState extends MusicBeatState
 		for (strumLine in strumLines.members) strumLine.vocals.stop();
 		inst.stop();
 		vocals.stop();
-		#if mobile mcontrols.visible = false; #end
-		#if ios
+		#if mobile
 		PauseButtonManager.hidePauseButton();
+		mcontrols.visible = false;
 		#end
 		if (validScore) {
 			#if !switch
