@@ -982,9 +982,6 @@ class PlayState extends MusicBeatState
 		}
 
 		#if mobile
-		PauseButtonManager.showPauseButtonOnCamera(camHUD, null, function() {
-		pauseGame();
-		});
 		mcontrols.visible = true;
 		#end
 
@@ -1055,6 +1052,12 @@ class PlayState extends MusicBeatState
 	{
 		gameAndCharsCall("onSongStart");
 		startingSong = false;
+
+    #if mobile
+		PauseButtonManager.showPauseButtonOnCamera(camHUD, null, function() {
+		pauseGame();
+		});
+	#end
 
 		inst.onComplete = endSong;
 
