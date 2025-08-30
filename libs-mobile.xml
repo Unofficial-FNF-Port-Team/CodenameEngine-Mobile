@@ -21,7 +21,6 @@
 
         <!-- Mobile Libraries -->
         <git name="hxcpp" url="https://github.com/CodenameCrew/cne-hxcpp" />
-        <git name="extension-androidtools" url="https://github.com/MAJigsaw77/extension-androidtools" skipDeps="true" unless="ios"/>
 		
 		<!-- Documentation and other features -->
 		<git name="away3d" url="https://github.com/CodenameCrew/away3d" />
