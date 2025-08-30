@@ -696,7 +696,7 @@ class NativeWindow
 		return value;
 	}
 
-	#if mobile
+	#if ios
 	public function setVSync(value:Bool):Bool
 	{
 		if (handle != null)
