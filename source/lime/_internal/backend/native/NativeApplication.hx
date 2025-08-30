@@ -23,7 +23,7 @@ import lime.ui.KeyModifier;
 import lime.ui.Touch;
 import lime.ui.Window;
 
-#if ios
+#if mobile
 import lime.system.Orientation;
 #end
 
@@ -168,7 +168,7 @@ class NativeApplication
 		#end
 	}
 
-	#if ios
+	#if mobile
 	public function getDeviceOrientation():Orientation
 	{
 		#if (!macro && lime_cffi)
