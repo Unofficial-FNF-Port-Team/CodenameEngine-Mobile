@@ -110,7 +110,7 @@ If you don't have a github account please go onto https://codename-engine.com/ a
   - Download and play the engine port with its mods and modpacks
   - Mod and fork the engine port (without using it for illicit purposes)
   - Contribute to the engine port (for example through *Pull Requests*, *Issues*, etc)
-  - Release APK bundle mods that uses our Codename Engine Mobile Port as source (Specifing that uses our Codename Engine Mobile Port by for example crediting us if you gonna release your bundle)
+  - Release APK/IPA bundle mods that uses our Codename Engine Mobile Port as source (Specifing that uses our Codename Engine Mobile Port by for example crediting us if you gonna release your bundle)
   - Release modpacks
 
   ### You can't:
