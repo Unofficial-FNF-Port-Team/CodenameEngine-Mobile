@@ -111,13 +111,14 @@ If you don't have a github account please go onto https://codename-engine.com/ a
   - Mod and fork the engine port (without using it for illicit purposes)
   - Contribute to the engine port (for example through *Pull Requests*, *Issues*, etc)
   - Release APK/IPA bundle mods that uses our Codename Engine Mobile Port as source (Specifing that uses our Codename Engine Mobile Port by for example crediting us if you gonna release your bundle)
-  - Release modpacks
 
   ### You can't:
   - Steal code from Codename Engine Mobile Port for another different project that is not related to our Codename Engine Mobile Port (Codename Engine mods excluded) without asking if you can use
 
   ### Warnings for Codename Official Devs:
   - If you are a dev from Codename Engine, you can bypass all of theses rules
+
+  ### ALL THE OTHER RULES STILL APPLYS TO THIS PORT, THIS IS JUST SPECIFIED RULES FOR OUR MOBILE PORT
 
   #### *If you need more info or feel like asking to do something which is not listed here, ask us on our [Community Server (Mays Server)](https://discord.gg/KU4sAy76X9)!*
 </details>
