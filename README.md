@@ -89,3 +89,34 @@ If you don't have a github account please go onto https://codename-engine.com/ a
 - Credits to MAJigsaw77 for [hxvlc](https://github.com/MAJigsaw77/hxvlc) (video cutscene/mp4 support) and [hxdiscord_rpc](https://github.com/MAJigsaw77/hxdiscord_rpc) (discord rpc integration)
 - Credits to [TheoDev](https://github.com/TheoDevelops) for [FunkinModchart](https://lib.haxe.org/p/funkin-modchart/). ***(library used for modcharting features)***
 </details>
+
+<details>
+  <summary><h2>Mobile Credits</h2></summary>
+- Credits to [MaysLastPlay](https://www.youtube.com/@MaysLastPlay) - Main Developers
+- Credits to [Dechis](https://www.youtube.com/@Dxgamer7405) - Main Developers
+- Credits to [Stefan2008](https://www.youtube.com/@stefan2008official) - Helper
+- Credits to JustX/GreenColdTea - Helper and Reworking Lime for Gradle Shit
+- Credits to Idklol - Used most of his Mobile Code (Hitbox and VPad Codes)
+- Credits to [Fox2](https://www.youtube.com/@Fox22213) - Tester
+- Credits to [Vermilion](https://www.youtube.com/@Orangetake674) - Tester
+- Credits to Limon - Tester
+</details>
+
+<details>
+  <summary><h2>What can you do or not do with this Mobile Port</h2></summary>
+
+  ### You can:
+  - Download and play the engine port with its mods and modpacks
+  - Mod and fork the engine port (without using it for illicit purposes)
+  - Contribute to the engine port (for example through *Pull Requests*, *Issues*, etc)
+  - Release APK bundle mods that uses our Codename Engine Mobile Port as source (Specifing that uses our Codename Engine Mobile Port by for example crediting us if you gonna release your bundle)
+  - Release modpacks
+
+  ### You can't:
+  - Steal code from Codename Engine Mobile Port for another different project that is not related to our Codename Engine Mobile Port (Codename Engine mods excluded) without asking if you can use
+
+  ### Warnings for Codename Official Devs:
+  - If you are a dev from Codename Engine, you can bypass all of theses rules
+
+  #### *If you need more info or feel like asking to do something which is not listed here, ask us on our [Community Server (Mays Server)](https://discord.gg/KU4sAy76X9)!*
+</details>
