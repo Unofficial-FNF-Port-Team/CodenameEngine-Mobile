@@ -97,7 +97,7 @@ If you don't have a github account please go onto https://codename-engine.com/ a
 - Credits to [Dechis](https://www.youtube.com/@Dxgamer7405) - Main Developers
 - Credits to [Stefan2008](https://www.youtube.com/@stefan2008official) - Helper
 - Credits to JustX/GreenColdTea - Helper and Reworking Lime for Gradle Shit
-- Credits to Idklol - Used most of his Mobile Code (Hitbox and VPad Codes)
+- Credits to Idklool - Used most of his Mobile Code (Hitbox and VPad Codes)
 - Credits to [Fox2](https://www.youtube.com/@Fox22213) - Tester
 - Credits to [Vermilion](https://www.youtube.com/@Orangetake674) - Tester
 - Credits to Limon - Tester

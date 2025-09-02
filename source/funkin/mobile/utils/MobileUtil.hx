@@ -31,15 +31,20 @@ class MobileUtil {
    */
   public static function getDirectory():String {
     #if android
-    if (VERSION.SDK_INT == 29) {
-        return "/storage/emulated/0/Android/media/com.yoshman29.codenameengine/";
-    } else {
+        #if sys
+        try {
+            return "/storage/emulated/0/.CodenameEngine/";
+        } catch (e:Dynamic) {
+            // Fallback
+            return "/storage/emulated/0/Android/media/com.yoshman29.codenameengine/";
+        }
+        #else
         return "/storage/emulated/0/.CodenameEngine/";
-    }
+        #end
     #elseif ios
-    return System.documentsDirectory;
+        return System.documentsDirectory;
     #else
-    return "";
+        return "";
     #end
 }
 
