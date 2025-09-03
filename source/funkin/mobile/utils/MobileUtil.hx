@@ -25,26 +25,39 @@ using StringTools;
 
 class MobileUtil {
   public static var currentDirectory:String = null;
+  private static var useAlternativePath:Bool = false;
 
   /**
    * Get the directory for the application. (External for Android Platform and Internal for iOS Platform.)
+   * Now with automatic fallback to Android/media path if permissions fail.
    */
   public static function getDirectory():String {
     #if android
-        #if sys
-        try {
-            return "/storage/emulated/0/.CodenameEngine/";
-        } catch (e:Dynamic) {
-            // Fallback
-            return "/storage/emulated/0/Android/media/com.yoshman29.codenameengine/";
+    var preferredPath = "/storage/emulated/0/.CodenameEngine/";
+    var fallbackPath = "/storage/emulated/0/Android/media/com.yoshman29.codenameengine/";
+
+    if (useAlternativePath) return fallbackPath;
+
+    try {
+        if (!FileSystem.exists(preferredPath)) {
+            FileSystem.createDirectory(preferredPath);
         }
-        #else
-        return "/storage/emulated/0/.CodenameEngine/";
-        #end
+		
+        var testFile = preferredPath + ".permission_test";
+        File.saveContent(testFile, "test");
+        FileSystem.deleteFile(testFile);
+
+        return preferredPath;
+
+    } catch (e:Dynamic) {
+        useAlternativePath = true;
+        return fallbackPath;
+    }
+
     #elseif ios
-        return System.documentsDirectory;
+    return System.documentsDirectory;
     #else
-        return "";
+    return "";
     #end
 }
 
@@ -87,25 +100,32 @@ class MobileUtil {
         }
         #end
 
-        if (!FileSystem.exists(MobileUtil.getDirectory())) {
-            FileSystem.createDirectory(MobileUtil.getDirectory());
+        var targetDir = MobileUtil.getDirectory();
+        if (!FileSystem.exists(targetDir)) {
+            try {
+                FileSystem.createDirectory(targetDir);
+                trace('Successfully created directory: $targetDir');
+            } catch (e:Dynamic) {
+                trace('Failed to create directory $targetDir: $e');
+            }
         }
     } catch (e:Dynamic) {
         trace('Error on creating directory: $e');
-
-        if (!FileSystem.exists(MobileUtil.getDirectory())) {
-            NativeAPI.showMessageBox(
-				'Uncaught Error',
-                "It seems you did not enable the required permissions to run the game. " +
-                "Please enable them and add files to ${MobileUtil.getDirectory()}. Press OK to close the game."
-            );
+        var finalDir = MobileUtil.getDirectory();
+        if (!FileSystem.exists(finalDir)) {
             try {
-                FileSystem.createDirectory(MobileUtil.getDirectory());
-            } catch(_) {}
-            System.exit(0);
+                FileSystem.createDirectory(finalDir);
+            } catch (e2:Dynamic) {
+                NativeAPI.showMessageBox(
+                    'Uncaught Error',
+                    "It seems you did not enable the required permissions to run the game. " +
+                    "Please enable them and add files to ${finalDir}. Press OK to close the game."
+                );
+                System.exit(0);
+            }
         }
     }
-}
+  }
 
   /**
    * Saves a file to the external storage.
