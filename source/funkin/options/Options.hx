@@ -77,6 +77,11 @@ class Options
 	public static var contributors:Array<funkin.backend.system.github.GitHubContributor.CreditsGitHubContributor> = [];
 	public static var mainDevs:Array<Int> = [];  // IDs
 	public static var lastUpdated:Null<Float>;
+	
+	/**
+	 * MOBILE
+	 */
+	public static var hitboxAlpha:Float = 0.001; // Default to almost invisible
 
 	/**
 	 * CHARTER
@@ -240,6 +245,15 @@ class Options
 		FlxG.autoPause = autoPause;
 		if (FlxG.updateFramerate < framerate) FlxG.drawFramerate = FlxG.updateFramerate = framerate;
 		else FlxG.updateFramerate = FlxG.drawFramerate = framerate;
+	}
+
+	public static function get_hitboxAlpha():Float {
+		return hitboxAlpha;
+	}
+
+	public static function set_hitboxAlpha(value:Float):Float {
+		hitboxAlpha = Math.max(0.0, Math.min(1.0, value));
+		return hitboxAlpha;
 	}
 
 	public static function applyKeybinds() {

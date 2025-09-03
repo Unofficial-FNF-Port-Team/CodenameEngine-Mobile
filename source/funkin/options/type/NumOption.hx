@@ -29,14 +29,20 @@ class NumOption extends TextOption {
 		this.max = max;
 		this.step = step;
 		this.optionName = optionName;
-		this.parent = parent = parent != null ? parent : Options;
+		this.parent = parent != null ? parent : Options;
 
-		if (Reflect.field(parent, optionName) != null) currentValue = Reflect.field(parent, optionName);
+		if (optionName != null && Reflect.field(this.parent, optionName) != null) {
+			var rawValue:Float = Reflect.field(this.parent, optionName);
+			currentValue = FlxMath.bound(rawValue, min, max);
+		} else {
+			currentValue = min;
+		}
 
 		super(text, desc);
 
-		var measure = new Alphabet(0, 0, Std.string(Std.int(max)), "bold");
-		valueBoxWidth = measure.width;
+		var maxText = formatValue(max);
+		var measure = new Alphabet(0, 0, maxText, "bold");
+		valueBoxWidth = Math.max(measure.width, 80);
 		measure.destroy();
 
 		leftArrow = new FlxSprite();
@@ -47,25 +53,40 @@ class NumOption extends TextOption {
 		rightArrow.loadGraphic(Paths.image("menus/ui/arrow_right"));
 		add(rightArrow);
 
-		valueText = new Alphabet(0, 0, Std.string(currentValue), "bold");
+		valueText = new Alphabet(0, 0, formatValue(currentValue), "bold");
 		add(valueText);
+
+		if (optionName != null) {
+			Reflect.setField(this.parent, optionName, currentValue);
+		}
+	}
+
+	private function formatValue(value:Float):String {
+		if (step >= 1.0) {
+			return Std.string(Std.int(value));
+		} else if (step >= 0.01) {
+			return Std.string(Math.round(value * 100) / 100);
+		} else if (step >= 0.001) {
+			return Std.string(Math.round(value * 1000) / 1000);
+		} else {
+			return Std.string(Math.round(value * 10000) / 10000);
+		}
 	}
 
 	private function positionElements():Void {
+		if (__text == null) return;
+		
 		var baseX = __text.x + __text.width + spacing;
-
 		var textMidY = __text.y + (__text.height * 0.5);
 
 		leftArrow.x = baseX;
 		leftArrow.y = textMidY - (leftArrow.height * 0.5);
 
-		var valueAreaX = leftArrow.x + leftArrow.width + spacing;
-		var boxW = valueBoxWidth; 
-
-		valueText.x = valueAreaX + (boxW - valueText.width) * 0.5;
+		var valueAreaX = leftArrow.x + leftArrow.width + innerPad;
+		valueText.x = valueAreaX + (valueBoxWidth - valueText.width) * 0.5;
 		valueText.y = textMidY - (valueText.height * 0.5);
 
-		rightArrow.x = valueAreaX + boxW + spacing;
+		rightArrow.x = valueAreaX + valueBoxWidth + innerPad;
 		rightArrow.y = textMidY - (rightArrow.height * 0.5);
 	}
 
@@ -73,26 +94,35 @@ class NumOption extends TextOption {
 		if (locked) return;
 
 		var next = FlxMath.bound(currentValue + change * step, min, max);
-		if (next == currentValue) return;
+		if (Math.abs(next - currentValue) < (step * 0.001)) return;
 
 		currentValue = next;
-		valueText.text = Std.string(currentValue);
+		valueText.text = formatValue(currentValue);
 
-		Reflect.setField(parent, optionName, currentValue);
-		if (changedCallback != null) changedCallback(currentValue);
+		if (optionName != null && parent != null) {
+			Reflect.setField(parent, optionName, currentValue);
+		}
+		
+		if (changedCallback != null) {
+			changedCallback(currentValue);
+		}
+
+		positionElements();
 
 		CoolUtil.playMenuSFX(SCROLL);
 	}
 
 	public override function update(elapsed:Float):Void {
 		super.update(elapsed);
-
 		positionElements();
 
-		var mousePos = FlxG.mouse.getWorldPosition();
 		if (FlxG.mouse.justPressed) {
-			if (leftArrow.overlapsPoint(mousePos)) changeSelection(-1);
-			else if (rightArrow.overlapsPoint(mousePos)) changeSelection(1);
+			var mousePos = FlxG.mouse.getWorldPosition();
+			if (leftArrow.overlapsPoint(mousePos)) {
+				changeSelection(-1);
+			} else if (rightArrow.overlapsPoint(mousePos)) {
+				changeSelection(1);
+			}
 		}
 	}
 

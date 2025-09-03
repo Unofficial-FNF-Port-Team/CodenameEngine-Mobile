@@ -26,6 +26,9 @@
 
 		<str id="optionsTree.debug-name">Debug Options</str>
 		<str id="optionsTree.debug-desc">Debug Options for Developer Mode.</str>
+
+		<str id="optionsTree.mobileOptions-name">Mobile Options</str>
+		<str id="optionsTree.mobileOptions-desc">Configure mobile settings such as touch hitbox opacity.</str>
 	</group>
 
 	<group name="KeybindOptions" prefix="KeybindsOptions.">
@@ -95,6 +98,14 @@
 			<str id="gpuOnlyBitmaps-name">VRAM-Only Sprites</str>
 			<str id="gpuOnlyBitmaps-desc">If checked, will only store the bitmaps in the GPU, freeing a LOT of memory (EXPERIMENTAL). Turning this off will consume a lot of memory, especially on bigger sprites. If you aren't sure, leave this on.</str>
 		</group>
+	</group>
+
+	<group name="MobileOptions" prefix="MobileOptions.">
+		<str id="hitboxAlpha-name">Hitbox Opacity</str>
+		<str id="hitboxAlpha-desc">Controls how visible the hitbox controls are. Set to 0 for completely invisible hitboxes, or 1 for fully visible hitbox.</str>
+
+		<str id="resetMobileOptions-name">Reset All Options</str>
+		<str id="resetMobileOptions-desc">Auto Explanatory</str>
 	</group>
 
 	<group name="GameplayOptions" prefix="GameplayOptions.">

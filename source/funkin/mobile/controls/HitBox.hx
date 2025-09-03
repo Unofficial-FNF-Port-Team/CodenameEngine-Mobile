@@ -38,13 +38,26 @@ class HitBox extends FlxSpriteGroup
     {
         var button:FlxButton = new FlxButton(x, y);
         button.makeGraphic(width, height, FlxColor.fromString(color));
-        button.alpha = 0.001;
+        
+        var baseAlpha = Options.hitboxAlpha;
+        var pressedAlpha = Math.min(baseAlpha + 0.149, 1.0);
+        
+        button.alpha = baseAlpha;
 
-        button.onDown.callback = () -> button.alpha = 0.15;
-        button.onUp.callback = () -> button.alpha = 0.001;
+        button.onDown.callback = () -> button.alpha = pressedAlpha;
+        button.onUp.callback = () -> button.alpha = baseAlpha;
         button.onOut.callback = button.onUp.callback;
 
         return button;
+    }
+    
+    public function updateAlpha() {
+        var baseAlpha = Options.hitboxAlpha;
+        
+        if (buttonLeft != null) buttonLeft.alpha = baseAlpha;
+        if (buttonDown != null) buttonDown.alpha = baseAlpha;
+        if (buttonUp != null) buttonUp.alpha = baseAlpha;
+        if (buttonRight != null) buttonRight.alpha = baseAlpha;
     }
 
     override public function destroy()

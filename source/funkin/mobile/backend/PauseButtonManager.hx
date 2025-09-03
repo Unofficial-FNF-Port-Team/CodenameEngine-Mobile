@@ -126,28 +126,60 @@ class PauseButtonManager
         #if mobile
         var manager = getInstance();
         
-        if (manager.pauseButton != null && manager.isVisible) 
+        if (manager.pauseButton == null || !manager.isVisible) 
         {
-            var justPressed = false;
+            return;
+        }
+        
+        if (manager.pauseButton.cameras == null || manager.pauseButton.cameras.length == 0) 
+        {
+            trace("Warning: PauseButton cameras not properly set, skipping touch check");
+            return;
+        }
+        
+        var camera = manager.pauseButton.cameras[0];
+        if (camera == null) 
+        {
+            trace("Warning: PauseButton camera is null, skipping touch check");
+            return;
+        }
+        
+        var justPressed = false;
+        
+        for (touch in FlxG.touches.list)
+        {
+            if (touch == null) continue;
             
-			for (touch in FlxG.touches.list)
-			{
-				var touchPos = touch.getWorldPosition(manager.pauseButton.cameras[0]); 
-				if (touch.justPressed && manager.pauseButton.overlapsPoint(touchPos, true, manager.pauseButton.cameras[0]))
-				{
-					justPressed = true;
-					break;
-				}
-			}
-            
-            if (justPressed) 
-            {
-                manager.pauseButton.animation.play('pressed');
-                
-                if (manager.onClickCallback != null) 
+            try {
+                var touchPos = touch.getWorldPosition(camera); 
+                if (touch.justPressed && manager.pauseButton.overlapsPoint(touchPos, true, camera))
                 {
-                    manager.onClickCallback();
+                    justPressed = true;
+                    break;
                 }
+            }
+            catch (e:Dynamic) {
+                trace("Error processing touch: " + e);
+                try {
+                    if (touch.justPressed && manager.pauseButton.overlapsPoint(touch.getWorldPosition()))
+                    {
+                        justPressed = true;
+                        break;
+                    }
+                }
+                catch (e2:Dynamic) {
+                    trace("Error in fallback touch processing: " + e2);
+                }
+            }
+        }
+        
+        if (justPressed) 
+        {
+            manager.pauseButton.animation.play('pressed');
+            
+            if (manager.onClickCallback != null) 
+            {
+                manager.onClickCallback();
             }
         }
         #end
