@@ -36,17 +36,16 @@ class MobileUtil {
     var preferredPath = "/storage/emulated/0/.CodenameEngine/";
     var fallbackPath = "/storage/emulated/0/Android/media/com.yoshman29.codenameengine/";
 
-    if (useAlternativePath) return fallbackPath;
-
     try {
         if (!FileSystem.exists(preferredPath)) {
             FileSystem.createDirectory(preferredPath);
         }
-		
+
         var testFile = preferredPath + ".permission_test";
         File.saveContent(testFile, "test");
         FileSystem.deleteFile(testFile);
 
+        useAlternativePath = false;
         return preferredPath;
 
     } catch (e:Dynamic) {
@@ -59,7 +58,8 @@ class MobileUtil {
     #else
     return "";
     #end
-}
+  }
+
 
   /**
    * Requests Storage Permissions on Android Platform.
