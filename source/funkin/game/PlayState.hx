@@ -12,6 +12,7 @@ import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
+import flixel.sound.FlxSoundGroup;
 import funkin.backend.FunkinText;
 import funkin.backend.chart.Chart;
 import funkin.backend.chart.ChartData;
@@ -1101,10 +1102,10 @@ class PlayState extends MusicBeatState
 	@:dox(hide) private function generateSong(?songData:ChartData):Void
 	{
 		if (songData == null) songData = SONG;
-
+		
 		var foundCam = false;
 		var foundSigs = songData.meta.beatsPerMeasure.getDefault(4) != 4 || songData.meta.stepsPerBeat.getDefault(4) != 4;
-
+		
 		if (events == null) events = [];
 		else events = [
 			for (e in songData.events) {
@@ -1120,31 +1121,90 @@ class PlayState extends MusicBeatState
 				e;
 			}
 		];
-
+		
 		if (!foundSigs) {
 			camZoomingInterval = 4;
 			camZoomingEvery = BEAT;
 		}
-
+		
 		events.sort(function(p1, p2) {
 			return FlxSort.byValues(FlxSort.DESCENDING, p1.time, p2.time);
 		});
-
+		
 		curSong = songData.meta.name.toLowerCase();
 		curSongID = curSong.replace(" ", "-");
-
-		FlxG.sound.setMusic(inst = FlxG.sound.load(Assets.getMusic(Paths.inst(SONG.meta.name, difficulty, SONG.meta.instSuffix))));
-
-		var vocalsPath = Paths.voices(SONG.meta.name, difficulty, SONG.meta.vocalsSuffix);
-		if (SONG.meta.needsVoices && Assets.exists(vocalsPath))
-			vocals = FlxG.sound.load(Options.streamedVocals ? Assets.getMusic(vocalsPath) : vocalsPath);
-		else
-			vocals = new FlxSound();
-
-		vocals.group = FlxG.sound.defaultMusicGroup;
-		vocals.persist = false;
-
+		
+		try {
+			var instPath = Paths.inst(SONG.meta.name, difficulty, SONG.meta.instSuffix);
+			if (Assets.exists(instPath)) {
+				inst = FlxG.sound.load(Assets.getMusic(instPath));
+				if (inst != null) {
+					FlxG.sound.setMusic(inst);
+				} else {
+					trace("ERROR Inst not loaded: " + instPath);
+					inst = new FlxSound();
+					FlxG.sound.setMusic(inst);
+				}
+			} else {
+				trace("ERROR Inst not found: " + instPath);
+				inst = new FlxSound();
+				FlxG.sound.setMusic(inst);
+			}
+		} catch (e:Dynamic) {
+			trace("ERROR on loading Inst: " + e);
+			inst = new FlxSound();
+			FlxG.sound.setMusic(inst);
+		}
+		
+		vocals = createVocalsSound();
+		
 		generatedMusic = true;
+	}
+
+	/**
+	 * Creates the vocals sound.
+	 * @return FlxSound instance for the vocals.
+	 */
+	private function createVocalsSound():FlxSound {
+		var vocalsSound:FlxSound = null;
+		
+		try {
+			var vocalsPath = Paths.voices(SONG.meta.name, difficulty, SONG.meta.vocalsSuffix);
+			
+			if (SONG.meta.needsVoices && Assets.exists(vocalsPath)) {
+				trace("Trying to load voices: " + vocalsPath);
+				
+				vocalsSound = FlxG.sound.load(vocalsPath);
+				
+				if (vocalsSound == null) {
+					trace("WARNING: FlxG.sound.load returned null for vocals: " + vocalsPath);
+					vocalsSound = new FlxSound();
+				} else {
+					trace("Voices loaded successfully.");
+				}
+			} else {
+				trace("Vocals not found or not needed: " + vocalsPath);
+				vocalsSound = new FlxSound();
+			}
+		} catch (e:Dynamic) {
+			trace("ERROR on loading voices: " + e);
+			vocalsSound = new FlxSound();
+		}
+		
+		if (vocalsSound != null) {
+			try {
+				if (FlxG.sound.defaultMusicGroup != null) {
+					vocalsSound.group = FlxG.sound.defaultMusicGroup;
+				} else {
+					trace("WARNING: defaultMusicGroup null");
+				}
+				vocalsSound.persist = false;
+			} catch (e:Dynamic) {
+				trace("ERROR on trying configure voices: " + e);
+			}
+		}
+		
+		return vocalsSound != null ? vocalsSound : new FlxSound();
 	}
 
 	@:dox(hide) function sortByShit(Obj1:Note, Obj2:Note):Int {
