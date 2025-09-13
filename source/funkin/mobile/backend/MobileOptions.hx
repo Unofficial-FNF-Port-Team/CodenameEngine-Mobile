@@ -4,6 +4,8 @@ import funkin.options.TreeMenuScreen;
 import funkin.options.type.NumOption;
 import funkin.options.type.TextOption;
 import funkin.options.type.Separator;
+import funkin.options.type.ArrayOption;
+import funkin.mobile.controls.Mobilecontrols;
 
 class MobileOptions extends TreeMenuScreen {
 	public function new() {
