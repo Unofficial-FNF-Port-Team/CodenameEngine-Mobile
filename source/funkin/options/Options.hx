@@ -40,7 +40,7 @@ class Options
 	public static var splashesEnabled:Bool = true;
 	public static var hitWindow:Float = 250;
 	public static var songOffset:Float = 0;
-	public static var framerate:Int = 120;
+	public static var framerate:Int = 60;
 	public static var gpuOnlyBitmaps:Bool = #if (mac || web) false #else true #end; // causes issues on mac and web
 	public static var language = "en"; // default to english, Flags.DEFAULT_LANGUAGE should not modify this
 	public static var streamedMusic:Bool = true;
@@ -82,7 +82,7 @@ class Options
 	 * MOBILE
 	 */
 	public static var hitboxAlpha:Float = 0.001; // Default to almost invisible
-	public static var controlsChange:Array<String> = MobileOptions.getID('hitbox');
+	public static var controlsChange:Array<String> = null;
 
 	/**
 	 * CHARTER
