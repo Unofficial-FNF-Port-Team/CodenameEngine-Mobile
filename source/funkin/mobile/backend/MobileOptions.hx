@@ -10,7 +10,7 @@ class MobileOptions extends TreeMenuScreen {
 		super('optionsTree.mobileOptions-name', 'optionsTree.mobileOptions-desc', 'MobileOptions.');
 
 		add(new ArrayOption(getNameID('controlsChange'), getDescID('controlsChange'), [0, 1, 2], [getID('hitbox'), getID('vpad'), getID('keyboard')],
-			'quality', __changeControls, null));
+			'controlsChange', __changeControls));
 	
 		add(new NumOption(
 			getNameID('hitboxAlpha'), 
