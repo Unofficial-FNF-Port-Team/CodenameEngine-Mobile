@@ -8,6 +8,10 @@ import funkin.options.type.Separator;
 class MobileOptions extends TreeMenuScreen {
 	public function new() {
 		super('optionsTree.mobileOptions-name', 'optionsTree.mobileOptions-desc', 'MobileOptions.');
+
+		/*add(new ArrayOption(getNameID('controlsChange'), getDescID('controlsChange'), [0, 1, 2], [getID('hitbox'), getID('vpad'), getID('keyboard')],
+			'quality', __changeControls, 0));*/
+	
 		add(new NumOption(
 			getNameID('hitboxAlpha'), 
 			getDescID('hitboxAlpha'),
@@ -24,6 +28,11 @@ class MobileOptions extends TreeMenuScreen {
 			}
 		));
 	}
+
+	/*private function __changeQuality(value:Dynamic) {
+    var curSelected:Int = 0;
+    curSelected == Config.getcontrolmode();
+	}*/
 
 	private function __changeHitboxAlpha(value:Float) {
 		var clampedValue = Math.max(0.0, Math.min(1.0, value));
