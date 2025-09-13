@@ -104,8 +104,8 @@
 		<str id="hitboxAlpha-name">Hitbox Opacity</str>
 		<str id="hitboxAlpha-desc">Controls how visible the hitbox controls are. Set to 0 for completely invisible hitboxes, or 1 for fully visible hitbox.</str>
 
-		<str id="changeControls-name">Mobile Controls</str>
-		<str id="hitboxAlpha-desc"> Change your mobile controls here.</str>
+		<str id="controlsChange-name">Mobile Controls</str>
+		<str id="controlsChange-desc"> Change your mobile controls here.</str>
 
 		<str id="resetMobileOptions-name">Reset All Options</str>
 		<str id="resetMobileOptions-desc">Auto Explanatory</str>
