@@ -82,6 +82,7 @@ class Options
 	 * MOBILE
 	 */
 	public static var hitboxAlpha:Float = 0.001; // Default to almost invisible
+	public static var controlsChange:Array<String> = hitbox;
 
 	/**
 	 * CHARTER
@@ -255,6 +256,9 @@ class Options
 		hitboxAlpha = Math.max(0.0, Math.min(1.0, value));
 		return hitboxAlpha;
 	}
+
+    public static function get_controlsChange()
+	return controlsChange;
 
 	public static function applyKeybinds() {
 		PlayerSettings.solo.setKeyboardScheme(Solo);
