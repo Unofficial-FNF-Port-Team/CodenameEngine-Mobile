@@ -82,7 +82,7 @@ class Options
 	 * MOBILE
 	 */
 	public static var hitboxAlpha:Float = 0.001; // Default to almost invisible
-	public static var controlsChange:Array<String> = null;
+	public static var controlsChange:Int = 0;
 
 	/**
 	 * CHARTER
