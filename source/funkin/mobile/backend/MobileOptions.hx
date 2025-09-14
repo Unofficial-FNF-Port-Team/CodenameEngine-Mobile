@@ -48,7 +48,7 @@ class MobileOptions extends TreeMenuScreen {
     case 0: Mobilecontrols.getModeFromNumber(0);
     case 1: Mobilecontrols.getModeFromNumber(1);
     case 2: Mobilecontrols.getModeFromNumber(2);
-    case 3: Mobilecontrols.getModeFromNumber(4);
+    case 3: Mobilecontrols.getModeFromNumber(3);
     }
 	 config = new Config();
 	 config.setcontrolmode(value);
