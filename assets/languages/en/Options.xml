@@ -110,6 +110,9 @@
         <str id="vpad">VirtualPad</str>
         <str id="keyboard">Keyboard</str>
 
+		<str id="extraControls-name">Extra Buttons</str>
+		<str id="extraControls-desc">Add more buttons to the Hitbox.</str>
+
 		<str id="resetMobileOptions-name">Reset All Options</str>
 		<str id="resetMobileOptions-desc">Auto Explanatory</str>
 	</group>
