@@ -6,6 +6,7 @@ import funkin.options.type.TextOption;
 import funkin.options.type.Separator;
 import funkin.options.type.ArrayOption;
 import funkin.mobile.controls.Mobilecontrols;
+import funkin.mobile.backend.Config;
 
 class MobileOptions extends TreeMenuScreen {
 	public function new() {
@@ -41,7 +42,8 @@ class MobileOptions extends TreeMenuScreen {
     case 1: Mobilecontrols.getModeFromNumber(0);
     case 2: Mobilecontrols.getModeFromNumber(2);
     }
-	}
+	 Config.setcontrolmode(value);
+   }
 
 	private function __changeHitboxAlpha(value:Float) {
 		var clampedValue = Math.max(0.0, Math.min(1.0, value));
