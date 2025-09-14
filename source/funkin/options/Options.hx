@@ -83,6 +83,7 @@ class Options
 	 */
 	public static var hitboxAlpha:Float = 0.001; // Default to almost invisible
 	public static var controlsChange:Int = 0;
+	public static var extraControls:Float = 0;
 
 	/**
 	 * CHARTER
