@@ -31,8 +31,7 @@ class MobileOptions extends TreeMenuScreen {
 			getNameID('extraControls'),
 			getDescID('extraControls'),
 			0, 2, 1,
-			'extraControls', __toggleExtraButton
-		));
+			'extraControls'));
 
 		add(new Separator());
 		add(new TextOption(
@@ -57,10 +56,5 @@ class MobileOptions extends TreeMenuScreen {
 	private function __changeHitboxAlpha(value:Float) {
 		var clampedValue = Math.max(0.0, Math.min(1.0, value));
 		Options.hitboxAlpha = Math.round(clampedValue * 100) / 100;
-	}
-
-	private function __toggleExtraButton() {
-        Options.extraControls = (Options.extraControls + 1) % 3;
-        FlxG.resetState();
 	}
 }
