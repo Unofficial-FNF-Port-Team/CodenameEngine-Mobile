@@ -15,8 +15,8 @@ class MobileOptions extends TreeMenuScreen {
 
 		add(new ArrayOption(getNameID('controlsChange'), 
 		getDescID('controlsChange'),
-		 [0, 1, 2],
-		[getID('hitbox'), getID('vpad'), getID('keyboard')],
+		 [0, 1, 2, 3],
+		[getID('hitbox'), getID('vpad-right'), getID('vpad-left'), getID('keyboard')],
         'controlsChange',
 		__changeControls));
 	
@@ -47,7 +47,8 @@ class MobileOptions extends TreeMenuScreen {
     switch(value) {
     case 0: Mobilecontrols.getModeFromNumber(4);
     case 1: Mobilecontrols.getModeFromNumber(0);
-    case 2: Mobilecontrols.getModeFromNumber(2);
+    case 2: Mobilecontrols.getModeFromNumber(1);
+    case 3: Mobilecontrols.getModeFromNumber(2);
     }
 	 config = new Config();
 	 config.setcontrolmode(value);
