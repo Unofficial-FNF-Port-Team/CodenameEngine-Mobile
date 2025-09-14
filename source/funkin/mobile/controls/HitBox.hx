@@ -80,6 +80,11 @@ class HitBox extends FlxSpriteGroup
         if (buttonExtraTwo != null) buttonExtraTwo.alpha = baseAlpha;
     }
 
+    public static function toggleExtraControls():Void {
+        Options.extraControls = (Options.extraControls + 1) % 3;
+        FlxG.resetState();
+    }
+
     override public function destroy()
     {
         super.destroy();
