@@ -46,8 +46,8 @@ class HitBox extends FlxSpriteGroup
                 buttonExtraTwo = createHitbox(FlxG.width / 2, Std.int(FlxG.height * 0.75), Std.int(FlxG.width / 2), Std.int(FlxG.height * 0.25), '0xFFFF00');
                 add(buttonExtraTwo);
             } else {
-                buttonExtra = createHitbox(0, Std.int(FlxG.height * 0.75), FlxG.width, Std.int(FlxG.height * 0.25), '0xFFFFFF');
-                add(buttonExtra);
+                buttonExtraOne = createHitbox(0, Std.int(FlxG.height * 0.75), FlxG.width, Std.int(FlxG.height * 0.25), '0xFFFFFF');
+                add(buttonExtraOne);
             }
         }
     }
