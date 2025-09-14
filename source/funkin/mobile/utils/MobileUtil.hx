@@ -49,8 +49,10 @@ class MobileUtil {
         return preferredPath;
 
     } catch (e:Dynamic) {
-        useAlternativePath = true;
-        return fallbackPath;
+      if (VERSION_SDK == 29) {
+      useAlternativePath = true;
+      return fallbackPath;
+      }
     }
 
     #elseif ios
