@@ -9,6 +9,7 @@ import funkin.mobile.controls.Mobilecontrols;
 import funkin.mobile.backend.Config;
 
 class MobileOptions extends TreeMenuScreen {
+	var config:Config;
 	public function new() {
 		super('optionsTree.mobileOptions-name', 'optionsTree.mobileOptions-desc', 'MobileOptions.');
 
@@ -42,7 +43,8 @@ class MobileOptions extends TreeMenuScreen {
     case 1: Mobilecontrols.getModeFromNumber(0);
     case 2: Mobilecontrols.getModeFromNumber(2);
     }
-	 Config.setcontrolmode(value);
+	 config = new Config();
+	 config.setcontrolmode(value);
    }
 
 	private function __changeHitboxAlpha(value:Float) {
