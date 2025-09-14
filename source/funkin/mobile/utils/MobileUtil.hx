@@ -49,7 +49,8 @@ class MobileUtil {
         return preferredPath;
 
     
-    } if (VERSION_SDK == 29) { catch (e:Dynamic) {
+    } catch (e:Dynamic) {
+      if (VERSION_SDK == 29) {
         useAlternativePath = true;
         return fallbackPath;
      }
@@ -59,7 +60,7 @@ class MobileUtil {
     return System.documentsDirectory;
     #else
     return "";
-    #end
+   #end
   }
 
 
@@ -84,7 +85,7 @@ class MobileUtil {
             }
 
             try {
-                Permissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+                Permissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNALc_STORAGE']);
             } catch (e2:Dynamic) {
                 trace('Fallback 2 failed: $e2');
             }
