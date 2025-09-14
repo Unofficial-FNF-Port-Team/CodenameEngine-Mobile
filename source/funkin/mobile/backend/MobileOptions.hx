@@ -60,7 +60,7 @@ class MobileOptions extends TreeMenuScreen {
 	}
 
 	private function __toggleExtraButton() {
-        Options.extrabutton = (Options.extraControls + 1) % 3;
+        Options.extraControls = (Options.extraControls + 1) % 3;
         FlxG.resetState();
 	}
 }
