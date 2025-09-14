@@ -107,7 +107,8 @@
 		<str id="controlsChange-name">Controls</str>
 		<str id="controlsChange-desc"> Change your mobile controls here.</str>
         <str id="hitbox">Hitbox</str>
-        <str id="vpad">VirtualPad</str>
+        <str id="vpad-right"> Right V-Pad</str>
+        <str id="vpad-left"> Left V-Pad</str>
         <str id="keyboard">Keyboard</str>
 
 		<str id="extraControls-name">Extra Buttons</str>
