@@ -53,7 +53,9 @@ class MobileUtil {
       if (VERSION.SDK_INT == 29) {
         useAlternativePath = true;
         return fallbackPath;
-     }
+     } else {
+       return preferredPath;
+    }
     }
 
     #elseif ios
