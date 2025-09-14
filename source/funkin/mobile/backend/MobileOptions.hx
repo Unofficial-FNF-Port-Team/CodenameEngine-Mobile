@@ -27,6 +27,12 @@ class MobileOptions extends TreeMenuScreen {
 			'hitboxAlpha', __changeHitboxAlpha
 		));
 
+		add(new NumOption(
+			getNameID('extraControls'),
+			getDescID('extraControls'),
+			0, 2, 1,
+			'extraControls'));
+
 		add(new Separator());
 		add(new TextOption(
 			getNameID('resetMobileOptions'),
