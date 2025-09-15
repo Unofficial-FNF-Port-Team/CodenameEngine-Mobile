@@ -107,8 +107,15 @@
 		<str id="controlsChange-name">Controls</str>
 		<str id="controlsChange-desc"> Change your mobile controls here.</str>
         <str id="hitbox">Hitbox</str>
-        <str id="vpad">VirtualPad</str>
+        <str id="vpad-right"> Right V-Pad</str>
+        <str id="vpad-left"> Left V-Pad</str>
         <str id="keyboard">Keyboard</str>
+
+		<str id="extraControls-name">Extra Buttons</str>
+		<str id="extraControls-desc">Add more buttons to the hitbox or virtual pad.</str>
+
+		<str id="extraControlsTop-name">Extra Buttons On Top</str>
+		<str id="extraControlsTop-desc">Place the extra buttons on top of the Hitbox.</str>
 
 		<str id="resetMobileOptions-name">Reset All Options</str>
 		<str id="resetMobileOptions-desc">Auto Explanatory</str>

@@ -27,8 +27,6 @@ class Mobilecontrols extends FlxSpriteGroup
 				initVirtualPad(0);
 			case 'vpad_left':
 				initVirtualPad(1);
-			case 'vpad_custom':
-				initVirtualPad(2);
 			case 'hitbox':
 				hitbox = new HitBox();
 				add(hitbox);
@@ -38,15 +36,31 @@ class Mobilecontrols extends FlxSpriteGroup
 
 	function initVirtualPad(vpadMode:Int) 
 	{
+	  var canExtraButton:Bool = Options.extraControls >= 1;
+      var canSecondExtraButton:Bool = Options.extraControls == 2;
+		
 		switch (vpadMode)
 		{
 			case 1:
+			  if (canExtraButton) {
+                 if (canSecondExtraButton) {
+				   vPad = new FlxVirtualPad(FULL, A_B);
+                 } else {
+                   vPad = new FlxVirtualPad(FULL, A);
+		         }
+		      } else {
 				vPad = new FlxVirtualPad(FULL, NONE);
-			case 2:
-				vPad = new FlxVirtualPad(FULL, NONE);
-				vPad = config.loadcustom(vPad);
+		      }
 			default: // 0
+				if (canExtraButton) {
+                 if (canSecondExtraButton) {
+				   vPad = new FlxVirtualPad(RIGHT_FULL, A_B);
+                 } else {
+                   vPad = new FlxVirtualPad(RIGHT_FULL, A);
+		         }
+		      } else {
 				vPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+			  }
 		}
 
 		vPad.alpha = 0.75;
@@ -60,8 +74,7 @@ class Mobilecontrols extends FlxSpriteGroup
 			case 0: 'vpad_right';
 			case 1: 'vpad_left';
 			case 2: 'keyboard';
-			case 3: 'vpad_custom';
-			case 4:	'hitbox';
+			case 3:	'hitbox';
 			default: 'vpad_right';
 		}
 	}
