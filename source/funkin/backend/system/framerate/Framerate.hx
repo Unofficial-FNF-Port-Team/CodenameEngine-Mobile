@@ -29,8 +29,10 @@ class Framerate extends Sprite {
 	 */
 	public static var debugMode:Int = 1;
 	public static var offset:FlxPoint = new FlxPoint();
-
 	public var bgSprite:Bitmap;
+  #if mobile
+  public var touch:Int = 0;
+  #end
 
 	public var categories:Array<FramerateCategory> = [];
 
@@ -55,7 +57,7 @@ class Framerate extends Sprite {
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, function(e:KeyboardEvent) {
 			switch(e.keyCode) {
-				case #if web Keyboard.NUMBER_3 #elseif mobile TouchInput.justPressed(bgSprite) #else Keyboard.F3 #end: // 3 on web or F3 on windows, linux and other things that runs code
+				case #if web Keyboard.NUMBER_3 #else Keyboard.F3 #end: // 3 on web or F3 on windows, linux and other things that runs code
 					debugMode = (debugMode + 1) % 3;
 			}
 		});
@@ -110,6 +112,25 @@ class Framerate extends Sprite {
 	public override function __enterFrame(t:Int) {
 		alpha = CoolUtil.fpsLerp(alpha, debugMode > 0 ? 1 : 0, 0.5);
 		debugAlpha = CoolUtil.fpsLerp(debugAlpha, debugMode > 1 ? 1 : 0, 0.5);
+
+  #if android
+  if(TouchInput.BACK()){
+    ++touch;
+    if(touch >= 3){
+        debugMode = (debugMode + 1) % 3;
+        touch = 0;
+        return;
+    }
+    touch = 0;
+  }
+   #elseif ios
+   for(camera in FlxG.cameras.list) {
+      var pos = FlxG.mouse.getScreenPosition(camera);
+       if (pos.x >= 10 + offset.x && pos.x <= offset.x + 80 && pos.y >= 2 + offset.y && pos.y <= 2 + offset.y + 60)
+    {
+        if (FlxG.mouse.justPressed) debugMode = (debugMode + 1) % 3);
+    }
+  #end
 
 		if (alpha < 0.05) return;
 		super.__enterFrame(t);
