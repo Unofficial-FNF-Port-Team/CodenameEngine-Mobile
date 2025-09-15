@@ -38,6 +38,7 @@ class UITextBox extends UISliceSprite implements IUIFocusable {
 
 	public override function update(elapsed:Float) {
 		if (selectable && hovered && FlxG.mouse.justReleased && __lastDrawCameras.length > 0) {
+			#if mobile FlxG.stage.window.textInputEnabled = true; #end
 			// get caret pos
 			var pos = FlxG.mouse.getScreenPosition(__lastDrawCameras[0], FlxPoint.get());
 			pos.x -= label.x;
