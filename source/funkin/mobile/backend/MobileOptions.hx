@@ -28,13 +28,13 @@ class MobileOptions extends TreeMenuScreen {
 			getDescID('hitboxAlpha'),
 			0.0, 1.0, 0.1,
 			'hitboxAlpha', __changeHitboxAlpha
-		);
+		),
 
 		add(new NumOption(
 			getNameID('extraControls'),
 			getDescID('extraControls'),
 			0, 2, 1,
-			'extraControls');
+			'extraControls')
 	]))
 		add(option);
 
