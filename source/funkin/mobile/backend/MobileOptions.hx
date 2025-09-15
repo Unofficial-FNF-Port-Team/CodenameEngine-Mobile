@@ -5,11 +5,13 @@ import funkin.options.type.NumOption;
 import funkin.options.type.TextOption;
 import funkin.options.type.Separator;
 import funkin.options.type.ArrayOption;
+import funkin.options.type.OptionType;
 import funkin.mobile.controls.Mobilecontrols;
 import funkin.mobile.backend.Config;
 
 class MobileOptions extends TreeMenuScreen {
 	var config:Config;
+	var hitboxOptions:Array<OptionType> = [];
 	public function new() {
 		super('optionsTree.mobileOptions-name', 'optionsTree.mobileOptions-desc', 'MobileOptions.');
 
@@ -19,7 +21,8 @@ class MobileOptions extends TreeMenuScreen {
 		[getID('vpad-right'), getID('vpad-left'), getID('keyboard'), getID('hitbox')],
         'controlsChange',
 		__changeControls));
-	
+
+	for (option in (hitboxOptions = [
 		add(new NumOption(
 			getNameID('hitboxAlpha'), 
 			getDescID('hitboxAlpha'),
@@ -32,6 +35,8 @@ class MobileOptions extends TreeMenuScreen {
 			getDescID('extraControls'),
 			0, 2, 1,
 			'extraControls'));
+	]))
+		add(option);
 
 		add(new Separator());
 		add(new TextOption(
@@ -39,19 +44,28 @@ class MobileOptions extends TreeMenuScreen {
 			getDescID('resetMobileOptions'),
 			() -> {
 				Options.hitboxAlpha = 0.001;
+				Options.extraControls = 0;
 			}
 		));
+
+	  updateHitboxOptions();
+	}
+
+	private function updateHitboxOptions() {
+		for (option in hitboxOptions) option.locked = Options.controlsChange != 3;
 	}
 
 	private function __changeControls(value:Dynamic) {
-    switch(value) {
-    case 0: Mobilecontrols.getModeFromNumber(0);
-    case 1: Mobilecontrols.getModeFromNumber(1);
-    case 2: Mobilecontrols.getModeFromNumber(2);
-    case 3: Mobilecontrols.getModeFromNumber(3);
-    }
+     switch(value) {
+        case 0: Mobilecontrols.getModeFromNumber(0);
+        case 1: Mobilecontrols.getModeFromNumber(1);
+        case 2: Mobilecontrols.getModeFromNumber(2);
+        case 3: Mobilecontrols.getModeFromNumber(3);
+     }
 	 config = new Config();
 	 config.setcontrolmode(value);
+
+	 updateHitboxOptions();
    }
 
 	private function __changeHitboxAlpha(value:Float) {
