@@ -36,12 +36,31 @@ class Mobilecontrols extends FlxSpriteGroup
 
 	function initVirtualPad(vpadMode:Int) 
 	{
+	  var canExtraButton:Bool = Options.extraControls >= 1;
+      var canSecondExtraButton:Bool = Options.extraControls == 2;
+		
 		switch (vpadMode)
 		{
 			case 1:
+			  if (canExtraButton) {
+                 if (canSecondExtraButton) {
+				   vPad = new FlxVirtualPad(FULL, A_B);
+                 } else {
+                   vPad = new FlxVirtualPad(FULL, A);
+		         }
+		      } else {
 				vPad = new FlxVirtualPad(FULL, NONE);
+		      }
 			default: // 0
+				if (canExtraButton) {
+                 if (canSecondExtraButton) {
+				   vPad = new FlxVirtualPad(RIGHT_FULL, A_B);
+                 } else {
+                   vPad = new FlxVirtualPad(RIGHT_FULL, A);
+		         }
+		      } else {
 				vPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+			  }
 		}
 
 		vPad.alpha = 0.75;
