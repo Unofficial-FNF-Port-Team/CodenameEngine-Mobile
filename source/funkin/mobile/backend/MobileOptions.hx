@@ -1,6 +1,7 @@
 package funkin.mobile.backend;
 
 import funkin.options.TreeMenuScreen;
+import funkin.options.type.Checkbox;
 import funkin.options.type.NumOption;
 import funkin.options.type.TextOption;
 import funkin.options.type.Separator;
