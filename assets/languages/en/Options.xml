@@ -112,7 +112,7 @@
         <str id="keyboard">Keyboard</str>
 
 		<str id="extraControls-name">Extra Buttons</str>
-		<str id="extraControls-desc">Add more buttons to the Hitbox.</str>
+		<str id="extraControls-desc">Add more buttons to the hitbox or virtual pad.</str>
 
 		<str id="extraControlsTop-name">Extra Buttons On Top</str>
 		<str id="extraControlsTop-desc">Place the extra buttons on top of the Hitbox.</str>
