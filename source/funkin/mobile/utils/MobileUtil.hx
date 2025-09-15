@@ -48,20 +48,21 @@ class MobileUtil {
         useAlternativePath = false;
         return preferredPath;
 
+    
     } catch (e:Dynamic) {
       //if (VERSION.SDK_INT == 29) {
-      useAlternativePath = true;
-      return fallbackPath;
-      /*} else {
+        useAlternativePath = true;
+        return fallbackPath;
+     /*} else {
        return preferredPath;
-      }*/
+    }*/
     }
 
     #elseif ios
     return System.documentsDirectory;
     #else
     return "";
-    #end
+   #end
   }
 
 
@@ -86,7 +87,7 @@ class MobileUtil {
             }
 
             try {
-                Permissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+                Permissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNALc_STORAGE']);
             } catch (e2:Dynamic) {
                 trace('Fallback 2 failed: $e2');
             }
