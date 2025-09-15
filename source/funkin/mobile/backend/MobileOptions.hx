@@ -35,7 +35,7 @@ class MobileOptions extends TreeMenuScreen {
 			getDescID('extraControls'),
 			0, 2, 1,
 			'extraControls'));
-	]))
+	]));
 		add(option);
 
 		add(new Separator());
