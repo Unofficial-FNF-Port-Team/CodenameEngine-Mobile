@@ -33,6 +33,8 @@ class MobileOptions extends TreeMenuScreen {
 			0, 2, 1,
 			'extraControls'));
 
+		add(new Checkbox(getNameID('extraControlsTop'), getDescID('extraControlsTop'), 'extraControlsTop'));
+
 		add(new Separator());
 		add(new TextOption(
 			getNameID('resetMobileOptions'),
