@@ -115,7 +115,7 @@ class Framerate extends Sprite {
       var pos = FlxG.mouse.getScreenPosition(camera);
        if (pos.x >= 10 + offset.x && pos.x <= offset.x + 80 && pos.y >= 2 + offset.y && pos.y <= 2 + offset.y + 60)
     {
-        if (FlxG.mouse.justPressed) debugMode = (debugMode + 1) % 3);
+        if (FlxG.mouse.justPressed) debugMode = ((debugMode + 1) % 3);
     }
   #end
 
