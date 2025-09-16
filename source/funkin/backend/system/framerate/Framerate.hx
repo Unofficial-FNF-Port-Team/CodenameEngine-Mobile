@@ -118,6 +118,7 @@ class Framerate extends Sprite {
     {
         if (FlxG.mouse.justPressed) debugMode = ((debugMode + 1) % 3);
     }
+   }
   #end
 
 		if (alpha < 0.05) return;
