@@ -31,7 +31,7 @@ class UIFileExplorer extends UISliceSprite {
 			fileDialog.browse(OPEN, this.fileType);
 			#elseif android
 			FileChooser.openFilePicker();
-			loadFile(file);
+			loadFile(MobileUtil.getDirectory());
 			#end
 		}, bWidth - 16, bHeight - 16);
 		members.push(uploadButton);
