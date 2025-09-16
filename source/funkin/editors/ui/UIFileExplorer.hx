@@ -24,15 +24,20 @@ class UIFileExplorer extends UISliceSprite {
 
 		if (onFile != null) this.onFile = onFile;
 
-		uploadButton = new UIButton(x + 8, y+ 8, null, function () {
+		uploadButton = new UIButton(x + 8, y+ 8, null, () -> {
 			#if desktop
 			var fileDialog = new FileDialog();
 			fileDialog.onSelect.add(loadFile);
 			fileDialog.browse(OPEN, this.fileType);
 			#elseif android
-			FileChooser.openFilePicker();
-			loadFile(MobileUtil.getDirectory());
-			#end
+	        FileChooser.onSelect = (path:String) -> {
+	            loadFile(path);
+				
+	            // avoid mem leaks
+	            FileChooser.onSelect = null;
+	        };
+	        FileChooser.openFilePicker();
+	        #end
 		}, bWidth - 16, bHeight - 16);
 		members.push(uploadButton);
 
