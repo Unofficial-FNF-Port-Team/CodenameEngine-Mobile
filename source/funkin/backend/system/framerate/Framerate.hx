@@ -54,7 +54,7 @@ class Framerate extends Sprite {
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, function(e:KeyboardEvent) {
 			switch(e.keyCode) {
-				case #if web Keyboard.NUMBER_3 #elseif android funkin.mobile.backend.TouchInput.BACK() #else Keyboard.F3 #end: // 3 on web or F3 on windows, linux and other things that runs code
+				case #if web Keyboard.NUMBER_3 #elseif android FlxG.android.justReleased.BACK #else Keyboard.F3 #end: // 3 on web or F3 on windows, linux and other things that runs code
 					debugMode = (debugMode + 1) % 3;
 			}
 		});
