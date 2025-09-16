@@ -50,7 +50,7 @@ class MobileUtil {
 
     
     } catch (e:Dynamic) {
-      if (VERSION.SDK_INT == 29) {
+      if (VERSION.SDK_INT == 29 || VERSION.SDK_INT == 30) {
         useAlternativePath = true;
         return fallbackPath;
      } else {
