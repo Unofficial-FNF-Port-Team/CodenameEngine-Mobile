@@ -31,40 +31,35 @@ class MobileUtil {
    * Get the directory for the application. (External for Android Platform and Internal for iOS Platform.)
    * Now with automatic fallback to Android/media path if permissions fail.
    */
-  public static function getDirectory():String {
+public static function getDirectory():String {
     #if android
     var preferredPath = "/storage/emulated/0/.CodenameEngine/";
     var fallbackPath = "/storage/emulated/0/Android/media/com.yoshman29.codenameengine/";
-
+    
+    if (FileSystem.exists(preferredPath + "assets") && FileSystem.isDirectory(preferredPath + "assets")) {
+        useAlternativePath = false;
+        return preferredPath;
+    }
+    
     try {
         if (!FileSystem.exists(preferredPath)) {
             FileSystem.createDirectory(preferredPath);
         }
-
         var testFile = preferredPath + ".permission_test";
         File.saveContent(testFile, "test");
         FileSystem.deleteFile(testFile);
-
         useAlternativePath = false;
         return preferredPath;
-
-    
     } catch (e:Dynamic) {
-      if (VERSION.SDK_INT == 29 || VERSION.SDK_INT == 30) {
         useAlternativePath = true;
         return fallbackPath;
-     } else {
-       useAlternativePath = false;
-       return preferredPath;
     }
-    }
-
     #elseif ios
     return System.documentsDirectory;
     #else
     return "";
-   #end
-  }
+    #end
+}
 
 
   /**
