@@ -54,7 +54,7 @@ class MobileUtil {
         useAlternativePath = true;
         return fallbackPath;
      } else {
-       useAlternativePath:Bool = false;
+       useAlternativePath = false;
        return preferredPath;
     }
     }
