@@ -76,7 +76,7 @@ class UIDropDown extends UISliceSprite {
 	public override function update(elapsed:Float) {
 		var opened = curMenu.contextMenuOpened();
 		framesOffset = (opened || (hovered && FlxG.mouse.pressed)) ? 18 : (hovered ? 9 : 0);
-		if (#if mobile FlxG.mouse.justPressed #else FlxG.mouse.justReleased #end && (hovered || dropButton.hovered) && !opened)
+		if (FlxG.mouse.justReleased && (hovered || dropButton.hovered) && !opened)
 			openContextMenu();
 
 		super.update(elapsed);
