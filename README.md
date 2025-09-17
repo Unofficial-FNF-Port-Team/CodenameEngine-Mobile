@@ -110,6 +110,7 @@ The engine uses [HaxeFlixel](https://haxeflixel.com/) and it mainly features:
 - Credits to [Dechis](https://www.youtube.com/@Dxgamer7405) - Main Developers
 - Credits to [Stefan2008](https://www.youtube.com/@stefan2008official) - Helper
 - Credits to JustX/GreenColdTea - Helper and Reworking Lime for Gradle Shit
+- Credits to [Cream.BR](https://youtube.com/@creambroficial) - Extra Buttons on Hitbox/VPad
 - Credits to Idklool - Used most of his Mobile Code (Hitbox and VPad Codes)
 - Credits to [Fox2](https://www.youtube.com/@Fox22213) - Tester
 - Credits to [Vermilion](https://www.youtube.com/@Orangetake674) - Tester
