@@ -17,6 +17,11 @@ Version:
 ### Which target are you using?
 [weed]: <> (CHANGE [ ] TO [x] IN FRONT OF YOUR TARGET!)
 
+## Mobile
+[ ] Android
+[ ] iOS/iPadOS
+
+## PC
 [ ] Windows
 [ ] Linux
 [ ] Mac
