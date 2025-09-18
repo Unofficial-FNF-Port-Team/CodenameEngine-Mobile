@@ -3,6 +3,7 @@ package funkin.backend.scripting;
 import hscript.*;
 import hscript.Expr.Error;
 import hscript.Parser;
+import funkin.backend.utils.NativeAPI;
 import openfl.Assets;
 
 class HScript extends Script {
@@ -115,6 +116,10 @@ class HScript extends Script {
 			Logs.logText(fn, GREEN),
 			Logs.logText(err, RED)
 		], ERROR);
+
+		#if mobile
+            NativeAPI.showMessageBox("Codename Engine Crash Handler (HScript)", fn + err, MSG_ERROR);
+	    #end
 	}
 
 	public override function setParent(parent:Dynamic) {
