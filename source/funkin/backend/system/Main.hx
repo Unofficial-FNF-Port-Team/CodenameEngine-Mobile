@@ -26,7 +26,7 @@ import sys.thread.Thread;
 #end
 
 #if android
-import extension.androidtools.os.Build;
+import android.os.Build;
 #end
 
 class Main extends Sprite
