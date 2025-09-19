@@ -18,10 +18,6 @@
 		<git name="hxdiscord_rpc" url="https://github.com/CodenameCrew/cne-hxdiscord_rpc" skipDeps="true" />
 		<git name="funkin-modchart" url="https://github.com/TheoDevelops/FunkinModchart" ref="f30676579d8de7ccac7d12e13b664e8b2c42c6bf" skipDeps="true" />
 		<lib name="hxvlc" version="1.9.3" skipDeps="true" />
-
-        <!-- Mobile Libraries -->
-        <git name="hxcpp" url="https://github.com/CodenameCrew/cne-hxcpp" />
-        <git name="extension-androidtools" url="https://github.com/MAJigsaw77/extension-androidtools" skipDeps="true" unless="ios"/>
 		
 		<!-- Documentation and other features -->
 		<git name="away3d" url="https://github.com/CodenameCrew/away3d" />
@@ -36,14 +32,6 @@
 		<lib global="true" name="format" /> <lib name="format" />
 
 		<git name="hxcpp" url="https://github.com/CodenameCrew/cne-hxcpp" />
-	</if>
-
-	<!-- Hxcpp Building -->
-	<if cond="build-hxcpp || all">
-		<print pretty="true">Rebuilding Hxcpp...</print>
-
-		<!-- Build hxcpp -->
-		<cmd inLib="hxcpp" dir="tools/hxcpp" cmd="haxe compile.hxml" />
 	</if>
 
 </libraries>
