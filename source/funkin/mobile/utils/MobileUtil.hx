@@ -1,10 +1,10 @@
 package funkin.mobile.utils;
 
 #if android
-import extension.androidtools.os.Build.VERSION;
-import extension.androidtools.os.Environment;
-import extension.androidtools.Permissions;
-import extension.androidtools.Settings;
+import android.os.Build.VERSION;
+import android.os.Environment;
+import android.Permissions;
+import android.Settings;
 #end
 
 import lime.system.System;
