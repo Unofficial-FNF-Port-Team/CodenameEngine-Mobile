@@ -175,7 +175,7 @@ class NativeAPI {
 		#if windows
 		Windows.showMessageBox(caption, message, icon);
 		#elseif android
-		extension.androidtools.Tools.showAlertDialog(caption, message, {name: "OK", func: null}, null);
+		android.Tools.showAlertDialog(caption, message, {name: "OK", func: null}, null);
 		#else
 		lime.app.Application.current.window.alert(message, caption);
 		#end
