@@ -35,6 +35,7 @@ class HScript extends Script {
 		__importedPaths = [path];
 
 		interp.errorHandler = _errorHandler;
+		interp.warnHandler = _warnHandler;
 		interp.importFailedCallback = importFailedCallback;
 		interp.staticVariables = Script.staticVariables;
 		interp.allowStaticVariables = interp.allowPublicVariables = true;
@@ -120,6 +121,24 @@ class HScript extends Script {
 		#if mobile
             NativeAPI.showMessageBox("Codename Engine Crash Handler (HScript)", fn + err, MSG_ERROR);
 	    #end
+	}
+
+	private function _warnHandler(error:Error) {
+		var fileName = error.origin;
+		var oldfn = '$fileName:${error.line}: ';
+		if(remappedNames.exists(fileName))
+			fileName = remappedNames.get(fileName);
+		var fn = '$fileName:${error.line}: ';
+		var err = error.toString();
+		while(err.startsWith(oldfn) || err.startsWith(fn)) {
+			if (err.startsWith(oldfn)) err = err.substr(oldfn.length);
+			if (err.startsWith(fn)) err = err.substr(fn.length);
+		}
+
+		Logs.traceColored([
+			Logs.logText(fn, GREEN),
+			Logs.logText(err, YELLOW)
+		], WARNING);
 	}
 
 	public override function setParent(parent:Dynamic) {
