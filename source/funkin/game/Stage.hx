@@ -360,9 +360,9 @@ class Stage extends FlxBasic implements IBeatReceiver {
 			stageScript.destroy();
 		}
 
-		if (destroySprites)
+		/*if (destroySprites)
 			for (e in stageSprites)
-				e?.destroy();
+				e?.destroy();*/
 
 		startCam.put();
 		super.destroy();
