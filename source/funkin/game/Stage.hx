@@ -370,7 +370,7 @@ class Stage extends FlxBasic implements IBeatReceiver {
 
 	public override function destroy() {
 		if (PlayState.instance == state && PlayState.instance.scripts != null) PlayState.instance.gameAndCharsCall("onStageDestroy", [this]);
-		stageScript?.call("destroy");
+		//stageScript?.call("destroy");
 		destroySilently();
 	}
 
